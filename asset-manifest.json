@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/slovanaci/static/css/main.f855e6bc.css",
-    "main.js": "/slovanaci/static/js/main.942a4a63.js",
+    "main.css": "/slovanaci/static/css/main.6d1f8a40.css",
+    "main.js": "/slovanaci/static/js/main.a37afc59.js",
     "static/js/952.3bd1e58f.chunk.js": "/slovanaci/static/js/952.3bd1e58f.chunk.js",
     "static/js/453.20ce8819.chunk.js": "/slovanaci/static/js/453.20ce8819.chunk.js",
     "static/media/logo.svg": "/slovanaci/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/slovanaci/index.html",
-    "main.f855e6bc.css.map": "/slovanaci/static/css/main.f855e6bc.css.map",
-    "main.942a4a63.js.map": "/slovanaci/static/js/main.942a4a63.js.map",
+    "main.6d1f8a40.css.map": "/slovanaci/static/css/main.6d1f8a40.css.map",
+    "main.a37afc59.js.map": "/slovanaci/static/js/main.a37afc59.js.map",
     "952.3bd1e58f.chunk.js.map": "/slovanaci/static/js/952.3bd1e58f.chunk.js.map",
     "453.20ce8819.chunk.js.map": "/slovanaci/static/js/453.20ce8819.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.942a4a63.js"
+    "static/css/main.6d1f8a40.css",
+    "static/js/main.a37afc59.js"
   ]
 }
