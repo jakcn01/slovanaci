@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Matches from './components/Matches';
+import Players from './components/Players';
+import PlayerProfile from './components/PlayerProfile';
+import "./App.css";
+import Home from './components/Home';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Navigate to="/slovanaci" replace />} />
+          <Route path="/slovanaci" element={<Home />} />
+          <Route path="/matches" element={<Matches />} />
+          <Route path="/players" element={<Players />} />
+          <Route path="/player/:id" element={<PlayerProfile />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

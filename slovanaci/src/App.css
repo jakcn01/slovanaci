@@ -36,3 +36,171 @@
     transform: rotate(360deg);
   }
 }
+
+.matches-container {
+  text-align: center;
+}
+
+.match {
+  margin-bottom: 20px;
+}
+
+.team {
+  display: inline-block;
+  margin: 0 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.navbar {
+  background-color: #333; /* Dark background */
+  padding: 10px;
+  text-align: center;
+}
+
+.navbar-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-menu li {
+  display: inline; /* Display items in a row */
+  margin: 0 15px; /* Add space between menu items */
+}
+
+.navbar-menu a {
+  color: white; /* White text */
+  text-decoration: none; /* Remove underline from links */
+  font-size: 18px;
+}
+
+.navbar-menu a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+.players-container {
+  text-align: center;
+}
+/* Parent container to center the list horizontally */
+.player-profile-container {
+  text-align: center; /* Center the content inside the container */
+}
+
+/* Basic styling for the entire player list */
+.players-list {
+  list-style-type: none; /* Remove default bullets */
+  padding: 0; /* Remove default padding */
+  margin: 0 auto; /* Center the list by setting left and right margins to auto */
+  max-width: 600px; /* Limit width for better readability */
+  background-color: #f9f9f9; /* Light background */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+/* Style individual player items */
+.player-item {
+  padding: 15px 20px; /* Spacing inside each item */
+  border-bottom: 1px solid #ddd; /* Light border between players */
+  text-align: center; /* Center text in each item */
+}
+
+.player-item:last-child {
+  border-bottom: none; /* Remove border from the last item */
+}
+
+/* Hover effect on player items */
+.player-item:hover {
+  background-color: #f0f0f0; /* Slightly darker background on hover */
+  cursor: pointer;
+}
+
+/* Style for player name */
+.player-name {
+  font-size: 1.2em; /* Slightly larger text */
+  font-weight: bold; /* Bold for emphasis */
+  color: #333; /* Darker text */
+}
+
+/* Player details container */
+.player-details {
+  align-items: center; /* Align items at the top */
+  margin: 20px; /* Margin for spacing */
+}
+
+/* Teammates table section */
+.teammates-table {
+  flex: 0 0 66%; /* Take 66% of the width on large screens */
+  padding: 20px; /* Padding for spacing */
+}
+
+/* Player info section */
+.player-info {
+  width: full;
+  align-items: center;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full height of the viewport */
+  text-align: center;
+}
+
+.loading-text {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #333; /* Customize the color as needed */
+}
+
+
+.separator {
+  display: block; /* Show separator on mobile */
+  margin: 20px 0; /* Margin for spacing */
+  border: none; /* No default border */
+  border-top: 1px solid #ddd; /* Horizontal line */
+}  
+
+
+/* Table styling */
+table {
+  width: 100%; /* Full width */
+  border-collapse: collapse; /* Collapse borders */
+  margin-top: 20px; /* Margin on top */
+}  
+
+th, td {
+  border: 1px solid #ddd; /* Border for cells */
+  padding: 8px; /* Padding for cells */
+  text-align: left; /* Left align text */
+}  
+
+th {
+  background-color: #f2f2f2; /* Header background */
+}  
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .player-details {
+    flex-direction: column; /* Stack sections on mobile */
+  }  
+
+  .player-info {
+    border-right: none; /* Remove right border on mobile */
+  }  
+
+    /* Separator line */
+  .separator {
+    display: none; /* Hide on mobile */
+  }  
+
+  .teammates-table {
+    width: 100%; /* Full width on mobile */
+    margin-top: 20px; /* Margin on top */
+  }  
+}  
