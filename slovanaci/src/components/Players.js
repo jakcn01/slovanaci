@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '../supabase';
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
+import { GetPlayersData } from '../api/playersApi';
 
 const Players = () => {
     const [players, setPlayers] = useState([]);
@@ -12,8 +12,7 @@ const Players = () => {
     useEffect(() => {
       const fetchPlayers = async () => {
         try {
-          const { data: playersData, error: playersError } = await supabase.from('Players').select('*');
-          if (playersError) throw playersError;
+          const playersData = await GetPlayersData();
           setPlayers(playersData);
         }
         catch (err) {
@@ -32,7 +31,7 @@ const Players = () => {
     }
   
     if (error) {
-      return <div>Error: {error}</div>; // Display error message
+      return <div>Error: {error}</div>;
     }
 
     return (
@@ -40,13 +39,13 @@ const Players = () => {
         <h1>Všichni hráči</h1>
         <ul className='player-list'>
           {players.map(player => (
-            <li key={player.Id} className='player-item'> 
-              <Link to={`/player/${player.Id}`}>
+            <Link key={player.Id} to={`/player/${player.Id}`}>
+              <li className='player-item'> 
                 <span className='player-name'>
                   {player.Name}
                 </span>
-              </Link>
-            </li>
+              </li>
+            </Link>
           ))}
         </ul>
       </div>

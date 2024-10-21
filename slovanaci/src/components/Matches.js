@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabase';
 import Loading from './Loading';
 import MatchResult from './MatchResult';
+import { GetExtendedMatchesData } from '../api/matchesApi';
 
 const Matches = () => {
   const [matches, setMatches] = useState([]);
@@ -11,33 +11,7 @@ const Matches = () => {
   useEffect(() => {
     const fetchMatches = async () => {
       try {
-        const { data: matchesData, error: matchesError } = await supabase
-          .from('Matches')
-          .select(`
-            Id,
-            Team1 (
-              TeamColor (Color),
-              Team_Players (
-                Id,
-                Player:PlayerId (Id, Name),
-                Goals (GoalCount, MatchId)
-                )
-              ),
-            Team2 (
-              TeamColor (Color),
-              Team_Players (
-                Id,
-                Player:PlayerId (Id, Name),
-                Goals (GoalCount, MatchId)
-              )
-            ),
-            MatchOrder,
-            MatchDates:MatchDates (
-              MatchDate
-            )
-          `)
-          .order('MatchOrder', { ascending: true });;
-        if (matchesError) throw matchesError;
+        const matchesData = await GetExtendedMatchesData();
         setMatches(matchesData);
         
       }

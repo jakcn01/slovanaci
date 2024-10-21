@@ -1,16 +1,8 @@
 import React from 'react';
+import { formatDate } from '../helpers/dateHelpers';
+import { calculateGoals } from '../helpers/calculateHelpers';
 
 const MatchResult = ({match}) => {
-    const calculateGoals = (players) => {
-        return players
-          .reduce((sum, player) => sum + (player.Goals ? player.Goals.reduce((goalSum, g) => g.MatchId === match.Id ? goalSum + g.GoalCount : goalSum, 0) : 0), 0);
-      };
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('cs-CZ'); // Formats to DD.MM.YYYY
-    };
-
     const renderTeam = (tp) => {
         return (
             <li key={tp.Id}>
@@ -21,8 +13,8 @@ const MatchResult = ({match}) => {
             </li>
         ) 
     }
-    const goalsScoredColor1 = calculateGoals(match.Team1.Team_Players);
-    const goalsScoredColor2 = calculateGoals(match.Team2.Team_Players);
+    const goalsScoredColor1 = calculateGoals(match.Team1.Team_Players, match);
+    const goalsScoredColor2 = calculateGoals(match.Team2.Team_Players, match);
 
     return (
         <div key={match.Id} className='match'>
