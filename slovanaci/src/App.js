@@ -6,6 +6,7 @@ import Players from './components/Players';
 import PlayerProfile from './components/PlayerProfile';
 import "./App.css";
 import Home from './components/Home';
+import LastMatch from './components/LastMatch';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/slovanaci" element={<Home />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/players" element={<Players />} />
+          <Route path="/last-match" element={<LastMatch />} />
           <Route path="/player/:id" element={<PlayerProfile />} />
         </Routes>
       </div>

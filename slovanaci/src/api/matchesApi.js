@@ -18,6 +18,7 @@ export const GetExtendedMatchesData = async () => {
         .select(`
         Id,
         Team1 (
+            Id,
             TeamColor (Color),
             Team_Players (
             Id,
@@ -26,6 +27,7 @@ export const GetExtendedMatchesData = async () => {
             )
             ),
         Team2 (
+            Id,
             TeamColor (Color),
             Team_Players (
             Id,

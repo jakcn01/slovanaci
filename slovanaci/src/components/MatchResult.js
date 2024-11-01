@@ -1,9 +1,9 @@
 import React from 'react';
 import { formatDate } from '../helpers/dateHelpers';
-import { calculateGoals } from '../helpers/calculateHelpers';
+import { calculateGoals } from '../helpers/matchHelpers';
 
-const MatchResult = ({match}) => {
-    const renderTeam = (tp) => {
+const MatchResult = ({match, showData = true}) => {
+    const renderTeamPlayer = (tp) => {
         return (
             <li key={tp.Id}>
                 {tp.Player.Name}
@@ -21,20 +21,20 @@ const MatchResult = ({match}) => {
         <h2>
             {match.Team1.TeamColor.Color} vs {match.Team2.TeamColor.Color} - {goalsScoredColor1}:{goalsScoredColor2}
         </h2>
-        <h3>{formatDate(match.MatchDates.MatchDate)} - zápas {match.MatchOrder}</h3>
+        {showData && <h3>{formatDate(match.MatchDates.MatchDate)} - zápas {match.MatchOrder}</h3>}
 
         <div>
             <div className='team'>
             <ul>
                 {match.Team1.Team_Players.map((tp) => (
-                    renderTeam(tp)
+                    renderTeamPlayer(tp)
                 ))}
             </ul>
         </div>
         <div className='team'>
             <ul>
                 {match.Team2.Team_Players.map((tp) => (
-                    renderTeam(tp)
+                    renderTeamPlayer(tp)
                 ))}
             </ul>
         </div>

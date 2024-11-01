@@ -4,8 +4,3 @@ export const calculatePercentage = (part, total) =>{
     }
     return Math.round((part / total) * 100);
   }
-
-export const calculateGoals = (players, match) => {
-    return players
-      .reduce((sum, player) => sum + (player.Goals ? player.Goals.reduce((goalSum, g) => g.MatchId === match.Id ? goalSum + g.GoalCount : goalSum, 0) : 0), 0);
-  };

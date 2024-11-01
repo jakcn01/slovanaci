@@ -14,6 +14,9 @@ const Navbar = () => {
         <li>
           <Link to="/players">Hráči</Link>
         </li>
+        <li>
+          <Link to="/last-match">Poslední výsledky</Link>
+        </li>
       </ul>
     </nav>
   );
