@@ -4,7 +4,7 @@ import { formatDate } from "../helpers/dateHelpers";
 const Attancdance = ({ matchDates, playerMatches}) => {
     const wasThere = (matchDate) => 
     {
-        return playerMatches.some(x => playerMatches == matchDate.toString())
+        return playerMatches.some(x => x == matchDate.toString())
     }
     return (
         <div>
