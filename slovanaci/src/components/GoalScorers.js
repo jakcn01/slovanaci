@@ -60,9 +60,9 @@ const GoalScorers = () => {
             <table className='scorer-table'>
                 <thead>
                     <tr>
-                        <th>Position</th>
-                        <th>Player Name</th>
-                        <th>Goals</th>
+                        <th>#</th>
+                        <th>Hráč</th>
+                        <th>G</th>
                     </tr>
                 </thead>
                 <tbody>

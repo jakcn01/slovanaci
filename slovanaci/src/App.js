@@ -6,7 +6,6 @@ import Players from './components/Players';
 import PlayerProfile from './components/PlayerProfile';
 import "./App.css";
 import Home from './components/Home';
-import LastMatch from './components/LastMatch';
 import GoalScorers from './components/GoalScorers';
 
 const App = () => {
