@@ -15,3 +15,9 @@ export const GetPlayersData = async () => {
     if (playersError) throw playersError;
     return playersData;
 }
+
+export const GetSimplePlayerData = async () => {
+    const { data: playersData, error: playersError } = await supabase.from('Players').select('Id, Name');
+    if (playersError) throw playersError;
+    return playersData;
+}

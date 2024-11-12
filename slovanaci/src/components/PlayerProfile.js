@@ -8,6 +8,7 @@ import { GetPlayerData } from '../api/playersApi.js';
 import { GetMatchesData } from '../api/matchesApi.js';
 import { GetGoalsData } from '../api/goalsApi.js';
 import { GetMatchDatesData } from '../api/matchDatesApi.js';
+import { calculatePlayerGoals } from '../helpers/matchHelpers.js';
 
 const PlayerProfile = () => {
   const { id } = useParams(); // Get the player's ID from the URL
@@ -59,7 +60,7 @@ const PlayerProfile = () => {
         setScore(getPlayerStats(playersMatches))
 
         const goalsData = await GetGoalsData();
-        const totalGoals = goalsData.reduce((sum, goal) => goal.TeamPlayerId.PlayerId == id ? sum + goal.GoalCount : sum, 0);
+        const totalGoals = calculatePlayerGoals(id, goalsData);
         setGoalsCount(totalGoals); // Set goals count
         
         const matchDatesData = await GetMatchDatesData(); 

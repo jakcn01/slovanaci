@@ -1,6 +1,6 @@
 import React from 'react';
 import { formatDate } from '../helpers/dateHelpers';
-import { calculateGoals } from '../helpers/matchHelpers';
+import { calculateTeamGoals } from '../helpers/matchHelpers';
 
 const MatchResult = ({match, showData = true}) => {
     const renderTeamPlayer = (tp) => {
@@ -13,8 +13,8 @@ const MatchResult = ({match, showData = true}) => {
             </li>
         ) 
     }
-    const goalsScoredColor1 = calculateGoals(match.Team1.Team_Players, match);
-    const goalsScoredColor2 = calculateGoals(match.Team2.Team_Players, match);
+    const goalsScoredColor1 = calculateTeamGoals(match.Team1.Team_Players, match);
+    const goalsScoredColor2 = calculateTeamGoals(match.Team2.Team_Players, match);
 
     return (
         <div key={match.Id} className='match'>

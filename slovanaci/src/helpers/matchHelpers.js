@@ -1,4 +1,4 @@
-export const calculateGoals = (players, match) => {
+export const calculateTeamGoals = (players, match) => {
     return players
       .reduce((sum, player) => sum + (player.Goals ? player.Goals.reduce((goalSum, g) => g.MatchId === match.Id ? goalSum + g.GoalCount : goalSum, 0) : 0), 0);
   };
@@ -11,8 +11,8 @@ export const calculateStandings = (matchesData) => {
       const team1Id = match.Team1.Id;
       const team2Id = match.Team2.Id;
 
-      const team1Goals = calculateGoals(match.Team1.Team_Players, match);
-      const team2Goals = calculateGoals(match.Team2.Team_Players, match);
+      const team1Goals = calculateTeamGoals(match.Team1.Team_Players, match);
+      const team2Goals = calculateTeamGoals(match.Team2.Team_Players, match);
 
       if (!standings[team1Id]) standings[team1Id] = { points: 0, goalsScored: 0, goalsConceded: 0, teamColor: match.Team1.TeamColor.Color };
       if (!standings[team2Id]) standings[team2Id] = { points: 0, goalsScored: 0, goalsConceded: 0, teamColor: match.Team2.TeamColor.Color  };
@@ -44,3 +44,6 @@ export const calculateStandings = (matchesData) => {
   .sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference);
 };
 
+export const calculatePlayerGoals = (playerId, goals) => {
+    return goals.reduce((sum, goal) => goal.TeamPlayerId.PlayerId == playerId ? sum + goal.GoalCount : sum, 0);
+}

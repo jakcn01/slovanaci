@@ -1,3 +1,5 @@
+import LastMatch from "./LastMatch";
+
 const Home = () => {
     
     return (
@@ -6,6 +8,7 @@ const Home = () => {
         <span>
           Jednoduchý web pro zaznamenávání našich výsledků. Příjímám všechny návrhhy na úpravu :)
         </span>
+        <LastMatch />
       </div>
     );
   };

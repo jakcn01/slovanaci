@@ -36,11 +36,12 @@ const LastMatch = () => {
             setError(err);
         }
         finally {
+          if (winners && winningTeamName)
             setLoading(false)
         }
     }
     fetchMatches();
-}, [lastDate, matches]);
+}, [lastDate, matches, winners, winningTeamName]);
 
   if (loading) {
     return <Loading />;
@@ -54,7 +55,7 @@ const LastMatch = () => {
   
   return (
     <div className='matches-container'>
-        <h1>{header}</h1>
+        <h2>{header}</h2>
         {matches.length !== 1 && 
             <>
                 <h2>{formatDate(lastDate)}</h2>
