@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/slovanaci/static/css/main.174f9a4a.css",
-    "main.js": "/slovanaci/static/js/main.9befb81d.js",
+    "main.css": "/slovanaci/static/css/main.99700619.css",
+    "main.js": "/slovanaci/static/js/main.0a911402.js",
     "static/js/952.3bd1e58f.chunk.js": "/slovanaci/static/js/952.3bd1e58f.chunk.js",
     "static/js/453.20ce8819.chunk.js": "/slovanaci/static/js/453.20ce8819.chunk.js",
     "index.html": "/slovanaci/index.html",
-    "main.174f9a4a.css.map": "/slovanaci/static/css/main.174f9a4a.css.map",
-    "main.9befb81d.js.map": "/slovanaci/static/js/main.9befb81d.js.map",
+    "main.99700619.css.map": "/slovanaci/static/css/main.99700619.css.map",
+    "main.0a911402.js.map": "/slovanaci/static/js/main.0a911402.js.map",
     "952.3bd1e58f.chunk.js.map": "/slovanaci/static/js/952.3bd1e58f.chunk.js.map",
     "453.20ce8819.chunk.js.map": "/slovanaci/static/js/453.20ce8819.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.174f9a4a.css",
-    "static/js/main.9befb81d.js"
+    "static/css/main.99700619.css",
+    "static/js/main.0a911402.js"
   ]
 }
