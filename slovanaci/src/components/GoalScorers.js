@@ -3,12 +3,14 @@ import Loading from './Loading';
 import { GetGoalsData } from '../api/goalsApi';
 import { GetSimplePlayerData } from '../api/playersApi';
 import { calculatePlayerGoals } from '../helpers/matchHelpers';
+import { useNavigate } from 'react-router-dom';
 
 const GoalScorers = () => {
     const [players, setPlayers] = useState(null);
     const [playerGoals, setPlayerGoals] = useState(null);
     const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -57,7 +59,7 @@ const GoalScorers = () => {
     return (
         <div className='scorers-container'>
             <h1>Střelci</h1>
-            <table className='scorer-table'>
+            <table>
                 <thead>
                     <tr>
                         <th>#</th>
@@ -69,11 +71,11 @@ const GoalScorers = () => {
                     {playerGoals.map(playerGoal => {
                         const player = players.find(player => player.Id === playerGoal.Id);
                         return (
-                            <tr key={player.Id} className='scorer-row'>
-                                <td className='scorer-position'>{playerGoal.rank}</td>
-                                <td className='scorer-name'>{player.Name}</td>
-                                <td className='scorer-goals'>{playerGoal.Goals}</td>
-                            </tr>
+                                <tr key={player.Id} className='scorers-row' onClick={() => navigate(`/player/${player.Id}`)} >
+                                    <td className='scorer-position'>{playerGoal.rank}</td>
+                                    <td className='scorer-name'>{player.Name}</td>
+                                    <td className='scorer-goals'>{playerGoal.Goals}</td>
+                                </tr>
                         );
                     })}
                 </tbody>

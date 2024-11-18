@@ -1,6 +1,6 @@
 import React from "react";
 import { formatDate } from "../helpers/dateHelpers";
-
+import { calculatePercentage } from "../helpers/calculateHelpers"
 const Attancdance = ({ matchDates, playerMatches}) => {
     const wasThere = (matchDate) => 
     {
@@ -8,6 +8,8 @@ const Attancdance = ({ matchDates, playerMatches}) => {
     }
     return (
         <div>
+            <h2>Účast</h2>
+            <p>Účast: {calculatePercentage(playerMatches.length, matchDates.length)}%</p>
             <ul>
                 {matchDates.map(x => {
                     return (

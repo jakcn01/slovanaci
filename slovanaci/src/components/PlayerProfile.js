@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Loading from './Loading.js';
 import Attancdance from './Attandance.js';
-import { calculatePercentage } from '../helpers/calculateHelpers.js';
+import SharedTeamsTable from './SharedTeams.js';
 import { GetTeamPlayerData } from '../api/teamPlayerApi.js';
 import { GetPlayerData } from '../api/playersApi.js';
 import { GetMatchesData } from '../api/matchesApi.js';
@@ -90,15 +90,18 @@ const PlayerProfile = () => {
         <div className='player-profile-container'>
             <h1>{player.Name}</h1>
             <div className="player-details">
-                <div className="player-info">
+                <div className="player-info-container">
+                    <h2>Statistiky</h2>
                     {player.Nickname !== null ? <p>Přezdívka: {player.Nickname}</p> : null}
                     {player.FavoritePosition !== null ? <p>Preferovaná pozice: {player.FavoritePosition}</p> : null}
                     <p>Vstřelených gólů: {goalsCount}</p>
-                    <p>Účast: {calculatePercentage(playerMatches.length, matchDates.length)}%</p>
                     <p>Celkové skóre: {score.goalsByTeam}:{score.goalsAgainstTeam}</p>
+                    <Attancdance matchDates={matchDates} playerMatches={playerMatches}/>
+                </div>
+                <div className='shared-teams-container'>
+                  <SharedTeamsTable playerId={id} /> 
                 </div>
             </div>
-            <Attancdance matchDates={matchDates} playerMatches={playerMatches}/>
         </div>
    )
 };
