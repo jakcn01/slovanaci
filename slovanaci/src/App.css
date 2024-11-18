@@ -207,6 +207,10 @@ table td {
   cursor: pointer 
 }
 
+.sorting-button {
+  cursor: pointer 
+}
+
 .scorer-position {
   color: #666;
 }
