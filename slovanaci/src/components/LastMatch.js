@@ -5,7 +5,7 @@ import { GetExtendedMatchesData } from '../api/matchesApi';
 import { GetMatchDatesData } from '../api/matchDatesApi';
 import { formatDate } from '../helpers/dateHelpers';
 import { calculateStandings } from '../helpers/matchHelpers';
-import { GetTeamPlayersData } from '../api/teamPlayerApi';
+import { GetTeamPlayerDataByTeam } from '../api/teamPlayerApi';
 
 const LastMatch = () => {
   const [matches, setMatches] = useState([]);
@@ -26,7 +26,7 @@ const LastMatch = () => {
         const standingsTable = calculateStandings(matches);
         if (standingsTable.length !== 0)
         {
-            const teamPlayers = await GetTeamPlayersData(standingsTable[0].teamId)
+            const teamPlayers = await GetTeamPlayerDataByTeam(standingsTable[0].teamId)
             setWinningTeamName(standingsTable[0].teamColor)
             setWinners(teamPlayers)
         }

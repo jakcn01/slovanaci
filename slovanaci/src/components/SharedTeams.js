@@ -36,14 +36,14 @@ const SharedTeamsTable = ({ playerId }) => {
           <thead>
             <tr>
               <th>Spoluhráč</th>
-              <th>Počet společných her</th>
+              <th className='shared-teams-count'>Počet společných her</th>
             </tr>
           </thead>
           <tbody>
             {sharedTeams.map(({ teammate_name, shared_teams_count }) => (
               <tr key={teammate_name}>
                 <td>{teammate_name}</td>
-                <td>{shared_teams_count}</td>
+                <td className='shared-teams-count'>{shared_teams_count}</td>
               </tr>
             ))}
           </tbody>

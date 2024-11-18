@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import Loading from './Loading';
 import { GetGoalsData } from '../api/goalsApi';
 import { GetSimplePlayerData } from '../api/playersApi';
-import { calculatePlayerGoals } from '../helpers/matchHelpers';
+import { calculatePlayerGoals, getPlayerStats, createPlusMinus } from '../helpers/matchHelpers';
 import { useNavigate } from 'react-router-dom';
+import { GetAllTeamPlayerData } from '../api/teamPlayerApi.js';
+import { GetMatchesData } from '../api/matchesApi.js';
 
 const GoalScorers = () => {
+    
     const [players, setPlayers] = useState(null);
     const [playerGoals, setPlayerGoals] = useState(null);
     const [loading, setLoading] = useState(true); 
@@ -17,15 +20,18 @@ const GoalScorers = () => {
             try {
                 const playersData = await GetSimplePlayerData();
                 const goalsData = await GetGoalsData();
+                const teamPlayersData = await GetAllTeamPlayerData()
+                const matchesData = await GetMatchesData();
+                
                 setPlayers(playersData);
                 const playerGoals = playersData.map(player => ({
                     Id: player.Id, 
-                    Goals: calculatePlayerGoals(player.Id, goalsData)
+                    Goals: calculatePlayerGoals(player.Id, goalsData),
+                    PlusMinus: createPlusMinus(matchesData.filter(x => teamPlayersData.some(y =>  y.TeamId === x.Team1.Id) || teamPlayersData.find(y =>  y.TeamId === x.Team2.Id)), player.Id)
                 }));
-                
-                // Sort players by goals in descending order
-                playerGoals.sort((a, b) => b.Goals - a.Goals);
-                
+
+            
+
                 // Assign ranks
                 const rankedPlayerGoals = playerGoals.map((player, index) => {
                     if (index > 0 && player.Goals === playerGoals[index - 1].Goals) {
@@ -64,7 +70,8 @@ const GoalScorers = () => {
                     <tr>
                         <th>#</th>
                         <th>Hráč</th>
-                        <th>G</th>
+                        <th className='scorer-goals-header'>G</th>
+                        <th className='scorer-goals-header'>+/-</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +82,7 @@ const GoalScorers = () => {
                                     <td className='scorer-position'>{playerGoal.rank}</td>
                                     <td className='scorer-name'>{player.Name}</td>
                                     <td className='scorer-goals'>{playerGoal.Goals}</td>
+                                    <td className='scorer-goals'>{playerGoal.PlusMinus}</td>
                                 </tr>
                         );
                     })}

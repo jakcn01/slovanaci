@@ -47,3 +47,35 @@ export const calculateStandings = (matchesData) => {
 export const calculatePlayerGoals = (playerId, goals) => {
     return goals.reduce((sum, goal) => goal.TeamPlayerId.PlayerId == playerId ? sum + goal.GoalCount : sum, 0);
 }
+
+export const getPlayerStats = (matches, id) => {
+    let goalsByTeam = 0;
+    let goalsAgainstTeam = 0;
+  
+    matches.forEach(match => {
+      // Check Team1
+      const team1Goals = match.Team1.Team_Players.flatMap(p => p.Goals); // All goals by Team1
+      const team2Goals = match.Team2.Team_Players.flatMap(p => p.Goals); // All goals by Team2
+  
+      const isPlayerInTeam1 = match.Team1.Team_Players.some(p => p.PlayerId == id );
+      const isPlayerInTeam2 = match.Team2.Team_Players.some(p => p.PlayerId == id );
+  
+      if (isPlayerInTeam1) {
+        goalsByTeam += team1Goals.reduce((sum, goal) => goal.MatchId === match.Id ? sum + goal.GoalCount : sum, 0);
+        goalsAgainstTeam += team2Goals.reduce((sum, goal) => goal.MatchId === match.Id ? sum + goal.GoalCount : sum, 0);
+      }
+
+      else if (isPlayerInTeam2) {
+        goalsByTeam += team2Goals.reduce((sum, goal) => goal.MatchId === match.Id ? sum + goal.GoalCount : sum, 0);
+        goalsAgainstTeam += team1Goals.reduce((sum, goal) => goal.MatchId === match.Id ? sum + goal.GoalCount : sum, 0);
+      }
+    });
+    return { goalsByTeam, goalsAgainstTeam };
+  }
+
+export const createPlusMinus = (matches, id) =>
+  {
+    const stats = getPlayerStats(matches, id)
+    return stats.goalsByTeam - stats.goalsAgainstTeam;
+  }
+  
