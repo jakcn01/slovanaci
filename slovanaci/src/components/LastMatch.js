@@ -3,6 +3,7 @@ import Loading from './Loading';
 import MatchResult from './MatchResult';
 import { GetExtendedMatchesData } from '../api/matchesApi';
 import { GetMatchDatesData } from '../api/matchDatesApi';
+import { GetSeasonsData } from '../api/seasonApi';
 import { formatDate } from '../helpers/dateHelpers';
 import { calculateStandings } from '../helpers/matchHelpers';
 import { GetTeamPlayerDataByTeam } from '../api/teamPlayerApi';
@@ -18,8 +19,10 @@ const LastMatch = () => {
   useEffect(() => {
     const fetchMatches = async () => {
       try {
-        const matchesData = await GetExtendedMatchesData();
-        const matchDates = await GetMatchDatesData();
+        const seasons = await GetSeasonsData();
+        const currentSeasonId = seasons[seasons.length - 1].Id
+        const matchesData = await GetExtendedMatchesData(currentSeasonId);
+        const matchDates = await GetMatchDatesData(currentSeasonId);
         setLastDate(matchDates.sort(x => x.MatchDate)[matchDates.length - 1].MatchDate);
         setMatches(matchesData.filter(x => x.MatchDates.MatchDate === lastDate));
         

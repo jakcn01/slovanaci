@@ -2,39 +2,58 @@ import { useState, useEffect } from 'react';
 import Loading from './Loading';
 import { GetGoalsData } from '../api/goalsApi';
 import { GetSimplePlayerData } from '../api/playersApi';
-import { calculatePlayerGoals, getPlayerStats, createPlusMinus } from '../helpers/matchHelpers';
+import { calculatePlayerGoals, createPlusMinus } from '../helpers/matchHelpers';
 import { useNavigate } from 'react-router-dom';
 import { GetAllTeamPlayerData } from '../api/teamPlayerApi.js';
 import { GetMatchesData } from '../api/matchesApi.js';
+import { GetSeasonsData } from '../api/seasonApi.js';
 
 const GoalScorers = () => {
     const [players, setPlayers] = useState(null);
     const [playerGoals, setPlayerGoals] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [sortConfig, setSortConfig] = useState({ key: 'Goals', direction: 'desc' }); // Default sort
+    const [sortConfig, setSortConfig] = useState({ key: 'Goals', direction: 'desc' });
+    const [seasons, setSeasons] = useState([]);
+    const [selectedSeason, setSelectedSeason] = useState(null); // Track selected season
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchPlayers = async () => {
+        const fetchInitialData = async () => {
             try {
                 const playersData = await GetSimplePlayerData();
+                setPlayers(playersData);
+
+                const seasonsData = await GetSeasonsData();
+                setSeasons(seasonsData);
+                setSelectedSeason(seasonsData[seasonsData.length - 1].Id); // Default to last season
+            } catch (err) {
+                console.error(err);
+                setError(err.message);
+            }
+        };
+
+        fetchInitialData();
+    }, []);
+
+    useEffect(() => {
+        if (!selectedSeason) return; // Wait until a season is selected
+
+        const fetchSeasonData = async () => {
+            setLoading(true);
+
+            try {
                 const goalsData = await GetGoalsData();
                 const teamPlayersData = await GetAllTeamPlayerData();
-                const matchesData = await GetMatchesData();
+                const matchesData = await GetMatchesData(selectedSeason);
 
-                setPlayers(playersData);
-                const playerGoals = playersData.map(player => ({
+                const seasonMatches = matchesData.filter(match => match.SeasonId === selectedSeason);
+                const playerGoals = players.map(player => ({
                     Id: player.Id,
-                    Goals: calculatePlayerGoals(player.Id, goalsData),
-                    PlusMinus: createPlusMinus(
-                        matchesData.filter(
-                            x =>
-                                teamPlayersData.some(y => y.TeamId === x.Team1.Id) ||
-                                teamPlayersData.find(y => y.TeamId === x.Team2.Id)
-                        ),
-                        player.Id
-                    )
+                    Goals: calculatePlayerGoals(player.Id, goalsData.filter(goal => 
+                        seasonMatches.some(match => match.Id === goal.MatchId)
+                    )),
+                    PlusMinus: createPlusMinus(seasonMatches, player.Id),
                 }));
 
                 playerGoals.sort((a, b) => b.Goals - a.Goals);
@@ -57,8 +76,12 @@ const GoalScorers = () => {
             }
         };
 
-        fetchPlayers();
-    }, []);
+        fetchSeasonData();
+    }, [players, selectedSeason]);
+
+    const handleSeasonChange = (e) => {
+        setSelectedSeason(e.target.value);
+    };
 
     const handleSort = (key) => {
         let direction = 'desc';
@@ -94,6 +117,23 @@ const GoalScorers = () => {
     return (
         <div className='scorers-container'>
             <h1>Střelci</h1>
+
+            {/* Season Dropdown */}
+            <div className="season-select">
+                <label htmlFor="season">Vyberte sezónu:</label>
+                <select
+                    id="season"
+                    value={selectedSeason || ''}
+                    onChange={handleSeasonChange}
+                >
+                    {seasons.map(season => (
+                        <option key={season.Id} value={season.Id}>
+                            {season.Name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             <table>
                 <thead>
                     <tr>

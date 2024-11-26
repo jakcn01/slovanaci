@@ -6,7 +6,7 @@ const Home = () => {
       <div className='players-container'>
         <h1>Slovaňáci</h1>
         <span>
-          Jednoduchý web pro zaznamenávání našich výsledků. Příjímám všechny návrhhy na úpravu :)
+          Jednoduchý web pro zaznamenávání našich výsledků. Příjímám všechny návrhy na úpravu :)
         </span>
         <LastMatch />
       </div>

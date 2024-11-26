@@ -8,77 +8,126 @@ import { GetPlayerData } from '../api/playersApi.js';
 import { GetMatchesData } from '../api/matchesApi.js';
 import { GetGoalsData } from '../api/goalsApi.js';
 import { GetMatchDatesData } from '../api/matchDatesApi.js';
+import { GetSeasonsData } from '../api/seasonApi.js';
 import { calculatePlayerGoals, getPlayerStats } from '../helpers/matchHelpers.js';
 
 const PlayerProfile = () => {
   const { id } = useParams(); // Get the player's ID from the URL
   const [player, setPlayer] = useState(null);
-  const [goalsCount, setGoalsCount] = useState(0); // State to store the goals count
-  const [score, setScore] = useState({goalsByTeam: 0, goalsAgainstTeam: 0}); // State to store the goals count
+  const [goalsCount, setGoalsCount] = useState(0);
+  const [score, setScore] = useState({ goalsByTeam: 0, goalsAgainstTeam: 0 });
   const [matchDates, setMatchDates] = useState(null);
   const [playerMatches, setPlayerMatches] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
-  const [error, setError] = useState(null); // Add error state
-  
-  // Fetch player data and goals based on ID
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [seasons, setSeasons] = useState([]);
+  const [selectedSeason, setSelectedSeason] = useState(null);
+
+  // Fetch player data and initialize seasons
   useEffect(() => {
-    const fetchPlayerData = async () => {
+    const fetchInitialData = async () => {
       try {
         const playerData = await GetPlayerData(id);
-        setPlayer(playerData); // Set player data
-        
-        const teamPlayersData = await GetTeamPlayerDataByPlayer(id)
-        const matchesData = await GetMatchesData();
-        const playersMatches = matchesData.filter(x => teamPlayersData.some(y =>  y.TeamId === x.Team1.Id) || teamPlayersData.find(y =>  y.TeamId === x.Team2.Id))
-        const playerAttandance = [...new Set(playersMatches.map(x => {return x.MatchDateId.MatchDate}))]
-        setPlayerMatches(playerAttandance)
-        setScore(getPlayerStats(playersMatches, id))
+        setPlayer(playerData);
 
-        const goalsData = await GetGoalsData();
-        const totalGoals = calculatePlayerGoals(id, goalsData);
-        setGoalsCount(totalGoals); // Set goals count
-        
-        const matchDatesData = await GetMatchDatesData(); 
-        setMatchDates(matchDatesData)
-        
+        const seasonsData = await GetSeasonsData();
+        setSeasons(seasonsData);
+        const currentSeason = seasonsData[seasonsData.length - 1];
+        setSelectedSeason(currentSeason.Id); // Default to the last season
       } catch (err) {
         console.error(err);
-        setError(err.message); // Set error message
-      } finally {
-        setLoading(false); // Set loading to false after fetching
+        setError(err.message);
       }
     };
 
-    fetchPlayerData();
+    fetchInitialData();
   }, [id]);
 
-  // Render loading, error, or player details
+  // Fetch season-specific data when season or player changes
+  useEffect(() => {
+    if (!selectedSeason) return; // Wait until a season is selected
+
+    const fetchSeasonData = async () => {
+      setLoading(true);
+
+      try {
+        const teamPlayersData = await GetTeamPlayerDataByPlayer(id);
+        const matchesData = await GetMatchesData(selectedSeason);
+        const playersMatches = matchesData.filter(
+          (x) =>
+            teamPlayersData.some((y) => y.TeamId === x.Team1.Id) ||
+            teamPlayersData.some((y) => y.TeamId === x.Team2.Id)
+        );
+        const playerAttendance = [
+          ...new Set(playersMatches.map((x) => x.MatchDateId.MatchDate)),
+        ];
+        setPlayerMatches(playerAttendance);
+        setScore(getPlayerStats(playersMatches, id));
+
+        const goalsData = await GetGoalsData();
+        const totalGoals = calculatePlayerGoals(id, goalsData);
+        setGoalsCount(totalGoals);
+
+        const matchDatesData = await GetMatchDatesData(selectedSeason);
+        setMatchDates(matchDatesData);
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSeasonData();
+  }, [id, selectedSeason]);
+
+  const handleSeasonChange = (e) => {
+    setSelectedSeason(e.target.value);
+  };
+
   if (loading) {
     return <Loading />;
   }
 
   if (error) {
-      return <div>Error: {error}</div>; // Display error message
-    }
-    
-    return (
-        <div className='player-profile-container'>
-            <h1>{player.Name}</h1>
-            <div className="player-details">
-                <div className="player-info-container">
-                    <h2>Statistiky</h2>
-                    {player.Nickname !== null ? <p>Přezdívka: {player.Nickname}</p> : null}
-                    {player.FavoritePosition !== null ? <p>Preferovaná pozice: {player.FavoritePosition}</p> : null}
-                    <p>Vstřelených gólů: {goalsCount}</p>
-                    <p>Celkové skóre: {score.goalsByTeam}:{score.goalsAgainstTeam}</p>
-                    <Attancdance matchDates={matchDates} playerMatches={playerMatches}/>
-                </div>
-                <div className='shared-teams-container'>
-                  <SharedTeamsTable playerId={id} /> 
-                </div>
-            </div>
+    return <div>Error: {error}</div>;
+  }
+
+  return (
+    <div className='player-profile-container'>
+      <h1>{player.Name}</h1>
+
+      {/* Season Dropdown */}
+      <div className="season-select">
+        <label htmlFor="season">Vyberte sezónu:</label>
+        <select
+          id="season"
+          value={selectedSeason || ''}
+          onChange={handleSeasonChange}
+        >
+          {seasons.map((season) => (
+            <option key={season.Id} value={season.Id}>
+              {season.Name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="player-details">
+        <div className="player-info-container">
+          <h2>Statistiky</h2>
+          {player.Nickname && <p>Přezdívka: {player.Nickname}</p>}
+          {player.FavoritePosition && <p>Preferovaná pozice: {player.FavoritePosition}</p>}
+          <p>Vstřelených gólů: {goalsCount}</p>
+          <p>Celkové skóre: {score.goalsByTeam}:{score.goalsAgainstTeam}</p>
+          <Attancdance matchDates={matchDates} playerMatches={playerMatches} />
         </div>
-   )
+        <div className='shared-teams-container'>
+          <SharedTeamsTable playerId={id} />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default PlayerProfile;

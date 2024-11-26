@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Loading from './Loading';
 import MatchResult from './MatchResult';
 import { GetExtendedMatchesData } from '../api/matchesApi';
+import { GetSeasonsData } from '../api/seasonApi';
 
 const Matches = () => {
   const [matches, setMatches] = useState([]);
@@ -11,9 +12,10 @@ const Matches = () => {
   useEffect(() => {
     const fetchMatches = async () => {
       try {
-        const matchesData = await GetExtendedMatchesData();
+        const seasons = await GetSeasonsData();
+        const currentSeasonId = seasons[seasons.length - 2].Id
+        const matchesData = await GetExtendedMatchesData(currentSeasonId); 
         setMatches(matchesData);
-        
       }
       catch (err) {
         console.error(err);
