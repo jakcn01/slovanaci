@@ -20,29 +20,37 @@ const LastMatch = () => {
       try {
         const matchesData = await GetExtendedMatchesData();
         const matchDates = await GetMatchDatesData();
-        setLastDate(matchDates.sort(x => x.MatchDate)[matchDates.length - 1].MatchDate);
-        setMatches(matchesData.filter(x => x.MatchDates.MatchDate === lastDate));
         
-        const standingsTable = calculateStandings(matches);
-        if (standingsTable.length !== 0)
-        {
-            const teamPlayers = await GetTeamPlayerDataByTeam(standingsTable[0].teamId)
-            setWinningTeamName(standingsTable[0].teamColor)
-            setWinners(teamPlayers)
+        // Calculate the last date
+        const sortedMatchDates = matchDates.sort((a, b) => new Date(a.MatchDate) - new Date(b.MatchDate));
+        const lastDate = sortedMatchDates[sortedMatchDates.length - 1].MatchDate;
+        setLastDate(lastDate);
+  
+        // Filter matches for the last date
+        const filteredMatches = matchesData.filter(x => x.MatchDates.MatchDate === lastDate);
+        setMatches(filteredMatches);
+  
+        // If matches are available, calculate standings
+        if (filteredMatches.length > 0) {
+          const standingsTable = calculateStandings(filteredMatches);
+          if (standingsTable.length > 0) {
+            const teamPlayers = await GetTeamPlayerDataByTeam(standingsTable[0].teamId);
+            setWinningTeamName(standingsTable[0].teamColor);
+            setWinners(teamPlayers);
+          }
         }
-        }
-        catch (err) {
-            console.error(err);
-            setError(err);
-        }
-        finally {
-          if (winners && winningTeamName)
-            setLoading(false)
-        }
-    }
+      } catch (err) {
+        console.error(err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
     fetchMatches();
-}, [lastDate, matches, winners, winningTeamName]);
-
+    // Empty dependency array to ensure the effect runs only on mount
+  }, []);
+  
   if (loading) {
     return <Loading />;
   }
