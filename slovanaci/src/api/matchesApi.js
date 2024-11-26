@@ -5,8 +5,8 @@ export const GetMatchesData = async () => {
         .from('Matches')
         .select(
             `Id,
-            Team1 ( Id, Team_Players (PlayerId, Goals ( GoalCount , MatchId))),
-            Team2 ( Id, Team_Players (PlayerId, Goals ( GoalCount , MatchId))),
+            Team1 ( Id, Team_Players (PlayerId, Goals ( GoalCount , MatchId, OwnGoal))),
+            Team2 ( Id, Team_Players (PlayerId, Goals ( GoalCount , MatchId, OwnGoal))),
             MatchDateId (MatchDate)`)
     if (matchesError) throw matchesError;
     return matchesData;
@@ -23,7 +23,7 @@ export const GetExtendedMatchesData = async () => {
             Team_Players (
             Id,
             Player:PlayerId (Id, Name),
-            Goals (GoalCount, MatchId)
+            Goals (GoalCount, MatchId, OwnGoal)
             )
             ),
         Team2 (
@@ -32,7 +32,7 @@ export const GetExtendedMatchesData = async () => {
             Team_Players (
             Id,
             Player:PlayerId (Id, Name),
-            Goals (GoalCount, MatchId)
+            Goals (GoalCount, MatchId, OwnGoal)
             )
         ),
         MatchOrder,
