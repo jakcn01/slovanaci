@@ -46,6 +46,7 @@
 }
 
 .team {
+  vertical-align: top;
   display: inline-block;
   margin: 0 20px;
 }
