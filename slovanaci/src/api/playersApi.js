@@ -11,7 +11,7 @@ export const GetPlayerData = async (id) => {
 }
 
 export const GetPlayersData = async () => {
-    const { data: playersData, error: playersError } = await supabase.from('Players').select('*');
+    const { data: playersData, error: playersError } = await supabase.from('Players').select('*').order('Name', { ascending: true });;
     if (playersError) throw playersError;
     return playersData;
 }
