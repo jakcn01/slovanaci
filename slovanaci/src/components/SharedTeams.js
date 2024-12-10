@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../api/supabase'; // Import your Supabase client
+import { useNavigate } from 'react-router-dom';
 
 const SharedTeamsTable = ({ playerId }) => {
   const [sharedTeams, setSharedTeams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSharedTeams = async () => {
@@ -40,8 +42,12 @@ const SharedTeamsTable = ({ playerId }) => {
             </tr>
           </thead>
           <tbody>
-            {sharedTeams.map(({ teammate_name, shared_teams_count }) => (
-              <tr key={teammate_name}>
+            {sharedTeams.map(({ teammate_id, teammate_name, shared_teams_count }) => (
+              <tr 
+                  className='scorers-row'
+                  onClick={() => {setLoading(true); navigate(`/player/${teammate_id}`)}}
+                  key={teammate_name}
+              >
                 <td>{teammate_name}</td>
                 <td className='shared-teams-count'>{shared_teams_count}</td>
               </tr>

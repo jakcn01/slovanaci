@@ -24,6 +24,7 @@ const PlayerProfile = () => {
   useEffect(() => {
     const fetchPlayerData = async () => {
       try {
+        setLoading(true); // Reset loading state on id change
         const playerData = await GetPlayerData(id);
         setPlayer(playerData); // Set player data
         
