@@ -38,7 +38,7 @@ export const GetExtendedMatchesData = async () => {
         ),
         MatchOrder,
         MatchDates:MatchDates (
-            MatchDate
+            MatchDate, Id
         )
         `)
         .order('MatchOrder', { ascending: true });;
