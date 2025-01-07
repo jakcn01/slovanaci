@@ -66,7 +66,7 @@ const PlayerProfile = () => {
         <div className='player-profile-container'>
             <h1>{player.Name}</h1>
             <div className="player-details">
-                <div className="player-info-container">
+                <div className="left-half-column">
                     <h2>Statistiky</h2>
                     {player.Nickname !== null ? <p>Přezdívka: {player.Nickname}</p> : null}
                     {player.FavoritePosition !== null ? <p>Preferovaná pozice: {player.FavoritePosition}</p> : null}
@@ -74,7 +74,7 @@ const PlayerProfile = () => {
                     <p>Celkové skóre: {score.goalsByTeam}:{score.goalsAgainstTeam}</p>
                     <Attancdance matchDates={matchDates} playerMatches={playerMatches}/>
                 </div>
-                <div className='shared-teams-container'>
+                <div className='right-half-column max-w-600'>
                   <SharedTeamsTable playerId={id} /> 
                 </div>
             </div>

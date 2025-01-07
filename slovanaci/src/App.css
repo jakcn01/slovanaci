@@ -38,6 +38,11 @@
 }
 
 .matches-container {
+  display: flex;
+  text-align: center;
+}
+
+.all-matches-container {
   text-align: center;
 }
 
@@ -133,7 +138,7 @@ ul {
 }
 
 /* Player info section */
-.player-info-container {
+.left-half-column {
   padding: 20px;
   width: 50%;
   align-items: center;
@@ -231,13 +236,18 @@ table td {
 }
 
 /* Teammates table section */
-.shared-teams-container {
+.right-half-column {
   width: 50%;
-  max-width: 600px;
+  align-items: center;
   padding: 20px; /* Padding for spacing */
 }
 
-.shared-teams-count {
+.max-w-600 {
+  width: 100%;
+  max-width: 600px;
+}
+
+.table-center-column {
   text-align: center;
 }
 
@@ -272,13 +282,34 @@ table td:first-child {
     border-color: #007bff;
 }
 
+.flex-center-container {
+  display: flex;
+  justify-content: center;
+}
+
+.stick {
+  position: sticky;
+  top: 150px;
+  z-index: 1000; /* Ensure it stays above other content if needed */
+  background-color: white; /* Optional: Set background color to avoid transparency issues */
+  padding: 10px; /* Adjust as necessary */
+}
+
+.all-teams {
+  display: flex;
+}
+
 /* Media query for smaller screens */
 @media (max-width: 768px) {
   .player-details {
     flex-direction: column; /* Stack sections on mobile */
   }  
+
+  .matches-container {
+    flex-direction: column;
+  }
   
-  .player-info-container {
+  .left-half-column {
     border-right: none; /* Remove right border on mobile */
     width: 100%;
     padding: 0px;
@@ -289,7 +320,7 @@ table td:first-child {
     display: none; /* Hide on mobile */
   }  
   
-  .shared-teams-container {
+  .right-half-column {
     padding: 0px;
     width: 100%; /* Full width on mobile */
     margin-top: 20px; /* Margin on top */

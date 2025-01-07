@@ -36,7 +36,7 @@ const Matches = () => {
   }
   
   return (
-    <div className='matches-container'>
+    <div className='all-matches-container'>
       <h1>Výsledky zápasů</h1>
       {matches.length === 0 ? (
         <p>Pro dané datum nejsou dostupné žádné záznamy.</p>
