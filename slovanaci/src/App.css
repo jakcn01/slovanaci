@@ -53,7 +53,7 @@
 .team {
   vertical-align: top;
   display: inline-block;
-  margin: 0 20px;
+  margin: 0 5px;
 }
 
 ul {
@@ -295,9 +295,10 @@ table td:first-child {
   padding: 10px; /* Adjust as necessary */
 }
 
-.all-teams {
-  display: flex;
-}
+  .all-teams {
+    justify-content: space-between;
+    margin: 0px 10px;
+  }
 
 /* Media query for smaller screens */
 @media (max-width: 768px) {
