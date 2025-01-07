@@ -67,14 +67,21 @@ const LastMatch = () => {
   
   const header = matches.length === 1 ? "Poslední výsledek" : "Výsledky posledního dne";
   
-  return (
+  return matches.length === 1 ? 
+  (
+    <MatchResult match={matches[0]} showData={false} />
+  ) : 
+  (
     <div>
       <h2>{header}</h2>
       <h2>{formatDate(lastDate)}</h2>
       <div className='matches-container'>
         <div className='right-half-column'>
           <div className='stick'>
-            <div className='flex-center-container all-teams'>
+            <div className='flex-center-container'>
+            <div className='max-w-600'>
+              <div className='flex-center-container all-teams'>
+
               {
                 teams.map(team => (
                   <div>
@@ -93,6 +100,8 @@ const LastMatch = () => {
                   )
                 )
               }
+              </div>
+                  </div>
             </div>
             <div className='flex-center-container'>
               <div className='max-w-600'>
