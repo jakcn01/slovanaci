@@ -7,6 +7,7 @@ export const GetMatchesData = async () => {
             `Id,
             Team1 ( Id, Team_Players (PlayerId, Goals ( GoalCount , MatchId, OwnGoal))),
             Team2 ( Id, Team_Players (PlayerId, Goals ( GoalCount , MatchId, OwnGoal))),
+            SmallGame,
             MatchDateId (MatchDate)`)
     if (matchesError) throw matchesError;
     return matchesData;
