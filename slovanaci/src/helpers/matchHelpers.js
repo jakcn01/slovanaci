@@ -27,12 +27,12 @@ export const calculateStandings = (matchesData) => {
 
       if (team1Goals > team2Goals) {
           standings[team1Id].points += 3;
-          standings[team1Id].losses += 1;
-          standings[team2Id].wins += 1;
+          standings[team2Id].losses += 1;
+          standings[team1Id].wins += 1;
       } else if (team1Goals < team2Goals) {
           standings[team2Id].points += 3;
-          standings[team1Id].wins += 1;
-          standings[team2Id].losses += 1;
+          standings[team2Id].wins += 1;
+          standings[team1Id].losses += 1;
       } else {
           standings[team1Id].draws += 1;
           standings[team2Id].draws += 1;

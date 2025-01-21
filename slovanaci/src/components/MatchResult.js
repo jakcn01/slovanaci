@@ -4,7 +4,8 @@ import { calculateTeamGoals } from '../helpers/matchHelpers';
 
 const MatchResult = ({match, showData = true}) => {
     const renderTeamPlayer = (tp) => {
-        const goalsString = ` - ${tp.Goals.reduce((sum, g) => g.MatchId === match.Id && g.OwnGoal == false ? sum + g.GoalCount : sum, 0)}`;
+        const goalsCount = tp.Goals.reduce((sum, g) => g.MatchId === match.Id && g.OwnGoal == false ? sum + g.GoalCount : sum, 0)
+        const goalsString = goalsCount === 0 ? ` - ${goalsCount}` : ''
         const ownGoalsCount = tp.Goals.reduce((sum, g) => g.MatchId === match.Id && g.OwnGoal == true ? sum + g.GoalCount : sum, 0)
         const ownGoalsString = ownGoalsCount === 0 ? "" :` [vl. ${ownGoalsCount}]`;
         return (
