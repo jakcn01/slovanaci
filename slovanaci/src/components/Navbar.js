@@ -17,6 +17,9 @@ const Navbar = () => {
         <li>
           <Link to="/goal-scorers">Střelci</Link>
         </li>
+        <li>
+          <Link to="/admin">Admin</Link>
+        </li>
       </ul>
     </nav>
   );

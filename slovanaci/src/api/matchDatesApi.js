@@ -7,3 +7,9 @@ export const GetMatchDatesData = async () => {
     if (matchDatesError) throw matchDatesError; // Handle goals error
     return matchDatesData;
 }
+
+export const CreateMatchDate = async (matchDate) => {
+    const { data, error } = await supabase.from('MatchDates').insert([{ MatchDate: matchDate }]);
+    if (error) throw error;
+    return data;
+};
