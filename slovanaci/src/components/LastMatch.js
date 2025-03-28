@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Loading from './Loading';
 import MatchResult from './MatchResult';
 import { GetExtendedMatchesData } from '../api/matchesApi';
-import { GetMatchDatesData } from '../api/matchDatesApi';
+import { GetAllMatchDatesData } from '../api/matchDatesApi';
 import { formatDate } from '../helpers/dateHelpers';
 import { calculateStandings } from '../helpers/matchHelpers';
 import { GetTeamPlayerDataByTeam } from '../api/teamPlayerApi';
@@ -19,7 +19,7 @@ const LastMatch = () => {
     const fetchMatches = async () => {
       try {
         const matchesData = await GetExtendedMatchesData();
-        const matchDates = await GetMatchDatesData();
+        const matchDates = await GetAllMatchDatesData();
         
         // Calculate the last date
         const sortedMatchDates = matchDates.sort((a, b) => new Date(a.MatchDate) - new Date(b.MatchDate));
@@ -84,7 +84,7 @@ const LastMatch = () => {
 
               {
                 teams.map(team => (
-                  <div>
+                  <div key={team.Id}>
                     <h2>{team.color}</h2>
                     <div className='team'>
                       <ul>
@@ -118,7 +118,7 @@ const LastMatch = () => {
                   </thead>
                   <tbody>
                     {standings.map(team => (
-                      <tr>
+                      <tr key={team.teamId}>
                         <td>{team.teamColor}</td>
                         <td className='table-center-column'>{team.wins}</td>
                         <td className='table-center-column'>{team.draws}</td>

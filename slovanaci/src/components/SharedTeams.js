@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../api/supabase'; // Import your Supabase client
 import { useNavigate } from 'react-router-dom';
 
-const SharedTeamsTable = ({ playerId }) => {
+const SharedTeamsTable = ({ playerId, seasonId }) => {
   const [sharedTeams, setSharedTeams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ const SharedTeamsTable = ({ playerId }) => {
   useEffect(() => {
     const fetchSharedTeams = async () => {
       try {
-        const { data, error } = await supabase.rpc('shared_teams_stats', { player_id: playerId });
+        const { data, error } = await supabase.rpc('shared_teams_stats', { player_id: playerId, season_id: seasonId });
         if (error) throw error;
         setSharedTeams(data);
       } catch (err) {
@@ -23,7 +23,7 @@ const SharedTeamsTable = ({ playerId }) => {
     };
 
     fetchSharedTeams();
-  }, [playerId]);
+  }, [playerId, seasonId]);
 
   if (loading) {
     return <div>Loading shared teams...</div>;
