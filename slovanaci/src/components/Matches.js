@@ -40,9 +40,11 @@ const Matches = () => {
           return { value: season.Id.toString(), label: season.Name }
         })
 
+        const seasonDefaultOption = sortedSeasons.find(s => s.IsCurrent);
+
         if (seasonFilter === '0' && seasonFilterOptions.length !== 0)
         {
-          setSeasonFilter(seasonFilterOptions[0].value)
+          setSeasonFilter(seasonDefaultOption.Id.toString())
         }
 
         setMatches(matchesData.filter(x => x.MatchDates.Id.toString() === matchesFilter && x.MatchDates.SeasonId.toString() === seasonFilter));
