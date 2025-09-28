@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { Link } from 'react-router-dom';
+import { signOut } from "../api/authApi";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
@@ -20,10 +21,13 @@ const Navbar = () => {
         <li>
           <Link to="/goal-scorers">Střelci</Link>
         </li>
-        {/* <li>
-          <Link to="/login">Přihlášení</Link>
-        </li> */}
-
+        <li>
+        {user ? (
+            <Link onClick={signOut}>Logout</Link>
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
+      </li> 
       </ul>
     </nav>
   );

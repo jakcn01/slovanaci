@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { signIn, signUp } from "../api/authApi";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthProvider";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -7,6 +9,14 @@ const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,9 +26,10 @@ const Login = () => {
     try {
       if (isSignUp) {
         await signUp(email, password);
-        alert("Check your email for confirmation!");
+        alert("Zkontroluj si email pro ověření!");
       } else {
         await signIn(email, password);
+        navigate("/", { replace: true });
       }
     } catch (err) {
       setError(err.message);
@@ -29,7 +40,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>{isSignUp ? "Sign Up" : "Log In"}</h2>
+      <h2>{isSignUp ? "Registrace" : "Přihlášení"}</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
@@ -40,24 +51,24 @@ const Login = () => {
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Heslo"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
         <button type="submit" disabled={loading}>
-          {loading ? "Loading..." : isSignUp ? "Sign Up" : "Log In"}
+          {loading ? "Načítá se..." : isSignUp ? "Registrace" : "Přihlášení"}
         </button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <p>
-        {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+        {isSignUp ? "Už jsi Slovaňák?" : "Ještě nejsi Slovaňák?"}{" "}
         <button
           type="button"
           onClick={() => setIsSignUp(!isSignUp)}
           style={{ background: "none", border: "none", color: "blue", cursor: "pointer" }}
         >
-          {isSignUp ? "Log In" : "Sign Up"}
+          {isSignUp ? "Přihlásit se" : "Zaregistrovat se"}
         </button>
       </p>
     </div>
