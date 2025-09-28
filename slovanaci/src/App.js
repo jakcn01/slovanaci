@@ -7,6 +7,7 @@ import PlayerProfile from './components/PlayerProfile';
 import "./App.css";
 import Home from './components/Home';
 import GoalScorers from './components/GoalScorers';
+import Login from './components/Login';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/players" element={<Players />} />
           <Route path="/player/:id" element={<PlayerProfile />} />
           <Route path="/goal-scorers" element={<GoalScorers />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>
