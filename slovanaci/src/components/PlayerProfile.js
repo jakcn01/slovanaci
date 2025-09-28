@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Loading from './Loading.js';
-import Attancdance from './Attandance.js';
+import Attandance from './Attandance.js';
 import SharedTeamsTable from './SharedTeams.js';
 import { GetTeamPlayerDataByPlayer } from '../api/teamPlayerApi.js';
 import { GetPlayerData } from '../api/playersApi.js';
@@ -17,6 +17,7 @@ const PlayerProfile = () => {
   const [player, setPlayer] = useState(null);
   const [goalsCount, setGoalsCount] = useState(0); // State to store the goals count
   const [score, setScore] = useState({goalsByTeam: 0, goalsAgainstTeam: 0}); // State to store the goals count
+  const [playerStats, setPlayerStats] = useState(); 
   const [matchDates, setMatchDates] = useState(null);
   const [playerMatches, setPlayerMatches] = useState(null);
   const [loading, setLoading] = useState(true); // Add loading state
@@ -36,9 +37,10 @@ const PlayerProfile = () => {
         const matchesData = await GetMatchesData(seasonFilter);
         const playersMatches = matchesData.filter(x => teamPlayersData.some(y =>  y.TeamId === x.Team1.Id) || teamPlayersData.find(y =>  y.TeamId === x.Team2.Id))
         const playerAttandance = [...new Set(playersMatches.map(x => {return x.MatchDateId.MatchDate}))]
+        setPlayerStats(teamPlayersData)
         setPlayerMatches(playerAttandance)
         setScore(getPlayerStats(playersMatches, id))
-
+        
         const goalsData = await GetGoalsData(seasonFilter);
         const totalGoals = calculatePlayerGoals(id, goalsData);
         setGoalsCount(totalGoals); // Set goals count
@@ -95,7 +97,7 @@ const PlayerProfile = () => {
                     {player.FavoritePosition !== null ? <p>Preferovaná pozice: {player.FavoritePosition}</p> : null}
                     <p>Vstřelených gólů: {goalsCount}</p>
                     <p>Celkové skóre: {score.goalsByTeam}:{score.goalsAgainstTeam}</p>
-                    <Attancdance matchDates={matchDates} playerMatches={playerMatches}/>
+                    <Attandance matchDates={matchDates} playerMatches={playerMatches} teamPlayerData={playerStats}/>
                 </div>
                 <div className='right-half-column max-w-600'>
                   <SharedTeamsTable playerId={id} seasonId={seasonFilter}/> 

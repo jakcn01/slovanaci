@@ -96,3 +96,23 @@ export const createPlusMinus = (matches, id) =>
     return stats.goalsByTeam - stats.goalsAgainstTeam;
   }
   
+export const getPlayerGoals = (tp, ownGoal = false) => {
+    return tp.Goals.reduce((sum, g) => g.OwnGoal == ownGoal ? sum + g.GoalCount : sum, 0)
+  }
+  
+export const getPlayerGoalsString = (tp, ownGoal = false) => {
+  const goalsCount = getPlayerGoals(tp, ownGoal)
+  if (ownGoal === true)
+  {
+    return goalsCount === 0 ? "" :` [vl. ${goalsCount}]`;
+  }
+  return goalsCount !== 0 ? ` - ${goalsCount}` : ''
+}
+
+export const getPlayerGoalsFinalString = (tp) => {
+  if (tp)
+  {
+    return getPlayerGoalsString(tp) + getPlayerGoalsString(tp, true)
+  }
+  return ""
+}
