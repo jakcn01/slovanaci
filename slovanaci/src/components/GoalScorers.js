@@ -17,7 +17,7 @@ const GoalScorers = () => {
     const [playerGoals, setPlayerGoals] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [filter, setFilter] = useState('big'); // Filter state for match type
+    const [filter, setFilter] = useState('small'); // Filter state for match type
     const [sortConfig, setSortConfig] = useState({ key: 'Goals', direction: 'desc' }); // Default sort
     const navigate = useNavigate();
 
