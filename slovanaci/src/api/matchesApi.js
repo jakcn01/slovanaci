@@ -20,7 +20,7 @@ export const GetMatchesData = async (seasonId) => {
                 ) 
             ),
             SmallGame,
-            MatchDateId!inner ( MatchDate, SeasonId )`
+            MatchDateId!inner ( Id, MatchDate, SeasonId )`
         )
         .eq('MatchDateId.SeasonId', seasonId); // Ensures only correct season matches are included
 

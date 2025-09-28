@@ -1,18 +1,15 @@
 import React from 'react';
 import { formatDate } from '../helpers/dateHelpers';
-import { calculateTeamGoals } from '../helpers/matchHelpers';
+import { calculateTeamGoals, getPlayerGoalsFinalString } from '../helpers/matchHelpers';
 
 const MatchResult = ({match, showData = true}) => {
     const renderTeamPlayer = (tp) => {
-        const goalsCount = tp.Goals.reduce((sum, g) => g.MatchId === match.Id && g.OwnGoal == false ? sum + g.GoalCount : sum, 0)
-        const goalsString = goalsCount !== 0 ? ` - ${goalsCount}` : ''
-        const ownGoalsCount = tp.Goals.reduce((sum, g) => g.MatchId === match.Id && g.OwnGoal == true ? sum + g.GoalCount : sum, 0)
-        const ownGoalsString = ownGoalsCount === 0 ? "" :` [vl. ${ownGoalsCount}]`;
+        const goalsString = getPlayerGoalsFinalString(tp)
         return (
             <li key={tp.Id}>
                 {tp.Player.Name}
                 {tp.Goals && tp.Goals.filter(x => x.MatchId === match.Id).length > 0
-                ? goalsString + ownGoalsString
+                ? goalsString 
                 : ''}
             </li>
         ) 
