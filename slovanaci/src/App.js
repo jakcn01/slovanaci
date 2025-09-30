@@ -8,6 +8,9 @@ import "./App.css";
 import Home from './components/Home';
 import GoalScorers from './components/GoalScorers';
 import Login from './components/Login';
+import EditMatchDates from './components/EditMatchDates';
+import PrivateRoute from './components/PrivateRoute';
+import EditMatchDate from './components/EditMatchDate';
 
 const App = () => {
   return (
@@ -21,6 +24,8 @@ const App = () => {
           <Route path="/players" element={<Players />} />
           <Route path="/player/:id" element={<PlayerProfile />} />
           <Route path="/goal-scorers" element={<GoalScorers />} />
+          <Route path="/edit-match-dates" element={<PrivateRoute><EditMatchDates /></PrivateRoute>} />
+          <Route path="/edit-match-date/:id" element={<PrivateRoute><EditMatchDate /></PrivateRoute>} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>

@@ -16,3 +16,35 @@ export const GetAllMatchDatesData = async () => {
     if (matchDatesError) throw matchDatesError; // Handle goals error
     return matchDatesData;
 }
+
+export const GetMatchDateById = async (id) => {
+  const { data, error } = await supabase
+    .from('MatchDates')
+    .select('*')
+    .eq('Id', id)
+    .single();
+  if (error) throw error;
+  return data;
+};
+
+export const UpdateMatchDate = async (id, matchDate, seasonId) => {
+  const { data, error } = await supabase
+    .from('MatchDates')
+    .update({ MatchDate: matchDate, SeasonId: seasonId })
+    .eq('Id', id)
+    .select()
+    .single();
+ if (error) throw error;
+  return data;
+};
+
+export const AddMatchDate = async (seasonId, matchDate) => {
+  const { data, error } = await supabase
+    .from('MatchDates')
+    .insert([{ SeasonId: seasonId, MatchDate: matchDate }])
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};

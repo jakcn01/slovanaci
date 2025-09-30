@@ -117,7 +117,7 @@ const LastMatch = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {standings.map(team => (
+                    {standings && standings.map(team => (
                       <tr key={team.teamId}>
                         <td>{team.teamColor}</td>
                         <td className='table-center-column'>{team.wins}</td>

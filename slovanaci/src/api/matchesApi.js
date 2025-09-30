@@ -61,3 +61,33 @@ export const GetExtendedMatchesData = async () => {
     if (matchesError) throw matchesError;
     return matchesData;
 }
+
+export const GetMatchesForMatchDate = async (matchDateId) => {
+  const { data, error } = await supabase
+    .from('Matches')
+    .select('Id, Team1:Team1 (Id, TeamColor:TeamColorId (Id, Color)), Team2:Team2 (Id, TeamColor:TeamColorId (Id, Color))')
+    .eq('MatchDateId', matchDateId);
+  if (error) throw error;
+  return data;
+};
+
+export const AddMatch = async (matchDateId, team1Id, team2Id) => {
+  const { data, error } = await supabase
+    .from('Matches')
+    .insert([{ MatchDateId: matchDateId, Team1: team1Id, Team2: team2Id }])
+    .select('Id, Team1:Team1 (Id, TeamColor:TeamColorId (Id, Color)), Team2:Team2 (Id, TeamColor:TeamColorId (Id, Color))')
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const DeleteMatch = async (Id) => {
+  const { error } = await supabase
+    .from("Matches")
+    .delete()
+    .eq("Id", Id);
+
+  if (error) throw error;
+  return true;
+};

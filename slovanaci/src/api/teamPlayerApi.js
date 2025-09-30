@@ -31,3 +31,24 @@ export const GetAllTeamPlayerData = async () => {
 
     return teamPlayersData;
 }
+
+
+export const AddTeamPlayer = async (teamId, playerId) => {
+  const { data, error } = await supabase
+    .from('Team_Players')
+    .insert([{ TeamId: teamId, PlayerId: playerId }])
+    .select('Id, PlayerId, Players(Id, Name)') // <-- include the Players relation
+    .single();
+  if (error) throw error;
+  return data;
+};
+
+export const DeleteTeamPlayer = async (Id) => {
+  const { error } = await supabase
+    .from("Team_Players")
+    .delete()
+    .eq("Id", Id);
+
+  if (error) throw error;
+  return true;
+};
