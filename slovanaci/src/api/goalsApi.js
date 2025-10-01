@@ -19,3 +19,12 @@ export const GetGoalsData = async (seasonId) => {
     return goalsData ?? []; // Return empty array if no valid data
 };
 
+export const SaveGoals = async (matchId, goalsPayload) => {
+  // Delete old
+  await supabase.from("Goals").delete().eq("MatchId", matchId);
+
+  if (goalsPayload.length > 0) {
+    const { error } = await supabase.from("Goals").insert(goalsPayload);
+    if (error) throw error;
+  }
+};

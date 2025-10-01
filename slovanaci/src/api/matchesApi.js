@@ -91,3 +91,44 @@ export const DeleteMatch = async (Id) => {
   if (error) throw error;
   return true;
 };
+
+export const GetMatchById = async (matchId) => {
+const { data, error } = await supabase
+  .from("Matches")
+  .select(`
+    Id,
+    OutsidePitch,
+    SmallGame,
+    Team1:Team1 (
+      Id,
+      TeamColor:TeamColorId (Id, Color),
+      Team_Players (
+        Id,
+        Player:PlayerId (Id, Name),
+        Goals:Goals (Id, GoalCount, OwnGoal)
+      )
+    ),
+    Team2:Team2 (
+      Id,
+      TeamColor:TeamColorId (Id, Color),
+      Team_Players (
+        Id,
+        Player:PlayerId (Id, Name),
+        Goals:Goals (Id, GoalCount, OwnGoal)
+      )
+    )
+  `)
+  .eq("Id", matchId)
+  .single();
+  if (error) throw error;
+  return data;
+};
+
+export const UpdateMatch = async (matchId, updates) => {
+  const { error } = await supabase
+    .from("Matches")
+    .update(updates)
+    .eq("Id", matchId);
+
+  if (error) throw error;
+};

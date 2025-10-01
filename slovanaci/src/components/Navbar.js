@@ -27,9 +27,9 @@ const Navbar = () => {
         ) : (
           <Link to="/login">Login</Link>
         )}
-          <li>
-            <Link to="/edit-match-dates">Admin</Link>
-          </li>
+        {user && (<li>
+          <Link to="/edit-match-dates">Admin</Link>
+        </li>)}
       </li> 
       </ul>
     </nav>
