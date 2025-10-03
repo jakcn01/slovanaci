@@ -91,38 +91,51 @@ export const DeleteMatch = async (Id) => {
   if (error) throw error;
   return true;
 };
-
 export const GetMatchById = async (matchId) => {
-const { data, error } = await supabase
-  .from("Matches")
-  .select(`
-    Id,
-    OutsidePitch,
-    SmallGame,
-    Team1:Team1 (
+  const { data, error } = await supabase
+    .from("Matches")
+    .select(`
       Id,
-      TeamColor:TeamColorId (Id, Color),
-      Team_Players (
+      OutsidePitch,
+      SmallGame,
+      Team1:Team1 (
         Id,
-        Player:PlayerId (Id, Name),
-        Goals:Goals (Id, GoalCount, OwnGoal)
-      )
-    ),
-    Team2:Team2 (
-      Id,
-      TeamColor:TeamColorId (Id, Color),
-      Team_Players (
+        TeamColor:TeamColorId (Id, Color),
+        Team_Players (
+          Id,
+          Player:PlayerId (Id, Name),
+          Goals:Goals (
+            Id,
+            GoalCount,
+            OwnGoal,
+            MatchId
+          )
+        )
+      ),
+      Team2:Team2 (
         Id,
-        Player:PlayerId (Id, Name),
-        Goals:Goals (Id, GoalCount, OwnGoal)
+        TeamColor:TeamColorId (Id, Color),
+        Team_Players (
+          Id,
+          Player:PlayerId (Id, Name),
+          Goals:Goals (
+            Id,
+            GoalCount,
+            OwnGoal,
+            MatchId
+          )
+        )
       )
-    )
-  `)
-  .eq("Id", matchId)
-  .single();
+    `)
+    .eq("Id", matchId)
+    .eq("Team1.Team_Players.Goals.MatchId", matchId)
+    .eq("Team2.Team_Players.Goals.MatchId", matchId)
+    .single();
+
   if (error) throw error;
   return data;
 };
+
 
 export const UpdateMatch = async (matchId, updates) => {
   const { error } = await supabase

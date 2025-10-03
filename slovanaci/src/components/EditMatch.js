@@ -4,6 +4,7 @@ import { SaveGoals } from "../api/goalsApi";
 import { GetMatchById, UpdateMatch } from "../api/matchesApi";
 import "../css/EditMatch.css";
 import { FaPlus, FaMinus } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const EditMatch = () => {
   const { id } = useParams();
@@ -51,49 +52,55 @@ const EditMatch = () => {
       });
 
       const payload = [];
-      for (const [tpId, { normal, own }] of Object.entries(goals)) {
+      for (const [tpId, { normal, own, trackOwn }] of Object.entries(goals)) {
         if (normal > 0) payload.push({ MatchId: match.Id, TeamPlayerId: parseInt(tpId), GoalCount: normal, OwnGoal: false });
-        if (own > 0) payload.push({ MatchId: match.Id, TeamPlayerId: parseInt(tpId), GoalCount: own, OwnGoal: true });
+        if (own > 0 && trackOwn === true) payload.push({ MatchId: match.Id, TeamPlayerId: parseInt(tpId), GoalCount: own, OwnGoal: true });
       }
 
       await SaveGoals(match.Id, payload);
-      alert("Match saved ✅");
+      toast.success("Match saved!");
     } catch (err) {
-      console.error("Save failed:", err.message);
-      alert("Save failed: " + err.message);
+      toast.error("Save failed!", err.message);
     }
   };
 
   const renderPlayerRow = (tp) => {
     const current = goals[tp.Id] || { normal: 0, own: 0, trackOwn: false };
     return (
-      <li key={tp.Id}>
-        <div className="player-name">
-            {tp.Player?.Name}
-        </div>
-        <div className="goal-controls">
-            <FaMinus onClick={() => setGoals(prev => ({ ...prev, [tp.Id]: { ...current, normal: Math.max(0, current.normal - 1) } }))} />
-            <span>{current.normal}</span>
-            <FaPlus onClick={() => setGoals(prev => ({ ...prev, [tp.Id]: { ...current, normal: current.normal + 1 } }))}/>
+      <li key={tp.Id} className="player-row">
+        <div className="player-main">
+          <span className="player-name">
+              {tp.Player?.Name}
+          </span>
+          <div className="goal-controls">
+              <FaMinus className="goal-button" onClick={() => setGoals(prev => ({ ...prev, [tp.Id]: { ...current, normal: Math.max(0, current.normal - 1) } }))} />
+                <span className="goal-count">{current.normal}</span>
+              <FaPlus className="goal-button" onClick={() => setGoals(prev => ({ ...prev, [tp.Id]: { ...current, normal: current.normal + 1 } }))}/>
+          </div>
         </div>
 
         <div className="own-goal-section">
-          <label>
-            <input type="checkbox" checked={current.trackOwn || false} onChange={(e) => setGoals(prev => ({ ...prev, [tp.Id]: { ...current, trackOwn: e.target.checked } }))}/>
+          <label className="checkbox-container">
+            <input 
+                className="red-checkbox"
+                type="checkbox" 
+                checked={current.trackOwn || false} 
+                onChange={(e) => setGoals(prev => ({ ...prev, [tp.Id]: { ...current, trackOwn: e.target.checked } }))}/>
             Vlastňák?
           </label>
-          {current.trackOwn && (
-            <div className="goal-controls">
-
-                <FaMinus onClick={() =>
-                    setGoals(prev => ({ ...prev, [tp.Id]: { ...current, own: Math.max(0, current.own - 1) } }))}/>
-
-                <span>{current.own}</span>
-                <FaPlus onClick={() =>
-                    setGoals(prev => ({ ...prev, [tp.Id]: { ...current, own: current.own + 1 } }))
+          <div
+            className={`goal-controls own-goals ${
+              current.trackOwn ? "visible" : "hidden"
+            }`}
+          >
+            <div className="goal-controls own-goal-controls">
+                <FaMinus className="goal-button own-goal-button" onClick={() => setGoals(prev => ({ ...prev, [tp.Id]: { ...current, own: Math.max(0, current.own - 1) } }))}/>
+                  <span className="goal-count">{current.own}</span>
+                <FaPlus className="goal-button own-goal-button" onClick={() => setGoals(prev => ({ ...prev, [tp.Id]: { ...current, own: current.own + 1 } }))
                 }/>
             </div>
-          )}
+          </div>
+          
         </div>
       </li>
     );
@@ -112,15 +119,29 @@ const EditMatch = () => {
 
       <div className="top-bar">
         <div className="match-details">
-          <label>
-            <input type="checkbox" checked={match.OutsidePitch || false} onChange={(e) => setMatch(prev => ({ ...prev, OutsidePitch: e.target.checked }))} />
-            Venkovní hřiště
+          <label className="checkbox-container">
+            <input
+              className="green-checkbox"
+              type="checkbox"
+              checked={match.OutsidePitch || false}
+              onChange={(e) =>
+                setMatch((prev) => ({ ...prev, OutsidePitch: e.target.checked }))
+              }
+            />
+            Outside Pitch
           </label>
-          <label>
-            <input type="checkbox" checked={match.SmallGame || false} onChange={(e) => setMatch(prev => ({ ...prev, SmallGame: e.target.checked }))} />
-            Turnájkový zápas
-          </label>
-        </div>
+
+          <label className="checkbox-container">
+            <input
+              className="green-checkbox"
+              type="checkbox"
+              checked={match.SmallGame || false}
+              onChange={(e) =>
+                setMatch((prev) => ({ ...prev, SmallGame: e.target.checked }))
+              }
+            />
+            Small Game
+          </label>        </div>
         <button className="save-button" onClick={handleSave}>Uložit</button>
       </div>
 
