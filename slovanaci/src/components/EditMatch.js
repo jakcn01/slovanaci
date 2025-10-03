@@ -5,6 +5,7 @@ import { GetMatchById, UpdateMatch } from "../api/matchesApi";
 import "../css/EditMatch.css";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Loading from "./Loading";
 
 const EditMatch = () => {
   const { id } = useParams();
@@ -41,7 +42,10 @@ const EditMatch = () => {
     fetchMatch();
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return <Loading />;
+  }  
+  
   if (!match) return <p>Match not found.</p>;
 
   const handleSave = async () => {

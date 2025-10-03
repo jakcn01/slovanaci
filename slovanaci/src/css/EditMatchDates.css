@@ -1,0 +1,85 @@
+.edit-matchdates-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.edit-matchdates-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.filter-bar .dropdown-filter {
+  flex: 1;
+  min-width: 200px;
+}
+
+.add-btn {
+  background-color: #4caf50;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background-color: #43a047;
+}
+
+.matchdates-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.matchdates-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  margin-bottom: 8px;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+
+.matchdates-list span {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.matchdates-list a {
+  color: #1976d2;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.matchdates-list a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .matchdates-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}

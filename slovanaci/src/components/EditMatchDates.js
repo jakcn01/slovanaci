@@ -12,6 +12,9 @@ import { calculatePlayerGoals, getPlayerStats } from '../helpers/matchHelpers.js
 import { GetSeasonsData } from '../api/seasonsApi.js';
 import DropdownFilter from './DropdownFilter.js';
 import { formatDate } from '../helpers/dateHelpers.js';
+import "../css/EditMatchDates.css"; // add this import at the top
+import { FaPencilAlt } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const EditMatchDates = () => {
   const [matchDates, setMatchDates] = useState(null);
@@ -41,7 +44,7 @@ const EditMatchDates = () => {
         
         setSeasons(seasonFilterOptions)
     } catch (err) {
-        console.error(err);
+        toast.error(err);
         setError(err.message); // Set error message
     } finally {
         setLoading(false); // Set loading to false after fetching
@@ -77,33 +80,30 @@ const EditMatchDates = () => {
     }
     
     return (
-        <div>
-
-            <DropdownFilter
-                        label="Sezóna: "
-                        options={seasons}
-                        selectedValue={seasonFilter}
-                        onChange={setSeasonFilter}
-                    />
-            
-            <button onClick={handleAddMatchDate}>
-                ➕ Přidat nový zápas
-            </button>
-
-            <ul>
-                {
-                    matchDates.map(x => {
-                                        return (
-                                            <li key={x.Id}>
-                                                <span>{formatDate(x.MatchDate)} </span>
-                                                <Link to={`/edit-match-date/${x.Id}`}>Upravit</Link>
-                                            </li>
-                                        )
-                                    })
-                }
-            </ul>
+    <div className="edit-matchdates-container">
+        <div className="filter-bar">
+        <DropdownFilter
+            label="Sezóna: "
+            options={seasons}
+            selectedValue={seasonFilter}
+            onChange={setSeasonFilter}
+        />
+        <button className="add-btn" onClick={handleAddMatchDate}>
+            ➕ Přidat nový zápas
+        </button>
         </div>
-   )
-};
+
+        <ul className="matchdates-list">
+        {matchDates.map((x) => (
+            <Link to={`/edit-match-date/${x.Id}`}>
+            <li key={x.Id}>
+            <span>{formatDate(x.MatchDate)}</span>
+            <FaPencilAlt className='' />
+            </li>
+            </Link>
+        ))}
+        </ul>
+    </div>
+    );};
 
 export default EditMatchDates;
