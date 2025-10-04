@@ -88,6 +88,7 @@ const EditMatchDate = () => {
           options={teamColors.map(c => ({ value: c.Id.toString(), label: c.Color }))}
           selectedValue={selectedColor}
           onChange={setSelectedColor}
+          displayEmpty
         />
 
           <FaPlus 
@@ -136,6 +137,7 @@ const EditMatchDate = () => {
                     )
                   );
                 }}
+                displayEmpty
               />
               <FaPlus 
                 className="icon-btn add"
@@ -208,7 +210,8 @@ const EditMatchDate = () => {
           }))}
           selectedValue={selectedTeam1}
           onChange={setSelectedTeam1}
-        />
+          displayEmpty
+          />
 
         <DropdownFilter
           label="Tým 2:"
@@ -218,6 +221,7 @@ const EditMatchDate = () => {
           }))}
           selectedValue={selectedTeam2}
           onChange={setSelectedTeam2}
+          displayEmpty
         />
 
           <FaPlus
