@@ -308,11 +308,17 @@ table td:first-child {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   text-align: center;
 }
+
+.login-inputs {
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
 .login-container input {
-  width: 100%;
-  margin: 8px 0;
   padding: 10px;
 }
+
 .login-container button {
   width: 100%;
   padding: 10px;

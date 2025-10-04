@@ -62,9 +62,10 @@ const EditMatch = () => {
       }
 
       await SaveGoals(match.Id, payload);
-      toast.success("Match saved!");
+      toast.success("Úspěšně uloženo.");
     } catch (err) {
-      toast.error("Save failed!", err.message);
+      toast.error("Uložení se nezdařilo!", err.message);
+      console.log(err.message);
     }
   };
 
@@ -132,7 +133,7 @@ const EditMatch = () => {
                 setMatch((prev) => ({ ...prev, OutsidePitch: e.target.checked }))
               }
             />
-            Outside Pitch
+            Hrálo se venku
           </label>
 
           <label className="checkbox-container">
@@ -144,7 +145,7 @@ const EditMatch = () => {
                 setMatch((prev) => ({ ...prev, SmallGame: e.target.checked }))
               }
             />
-            Small Game
+            Turnájkový formát
           </label>        </div>
         <button className="save-button" onClick={handleSave}>Uložit</button>
       </div>

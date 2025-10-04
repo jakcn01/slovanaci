@@ -89,7 +89,7 @@ const EditMatchDates = () => {
             onChange={setSeasonFilter}
         />
         <button className="add-btn" onClick={handleAddMatchDate}>
-            ➕ Přidat nový zápas
+            ➕ Přidat nový herní den
         </button>
         </div>
 

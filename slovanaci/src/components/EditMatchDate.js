@@ -57,21 +57,22 @@ const EditMatchDate = () => {
       const updated = await UpdateMatchDate(id, iso, matchDate.SeasonId);
       setMatchDate(updated);
     } catch (err) {
-      toast.error("Update failed:", err);
+      toast.error("Uložení se nezdařilo!", err);
+      console.log(err.message);
     }
   };
 
   if (loading) {
     return <Loading />;
   }
-  
+
   return (
     <div className="edit-match-date">
-      <h2>Edit Match Date</h2>
+      <h2>Upravit herní den</h2>
 
       {/* Date */}
       <label>
-        Match Date:
+        Datum:
         <input
           type="date"
           value={matchDate.MatchDate.split("T")[0]}
@@ -80,10 +81,10 @@ const EditMatchDate = () => {
       </label>
 
       {/* Teams */}
-      <h3>Teams</h3>
+      <h3>Týmy</h3>
       <div className="team-controls">
         <DropdownFilter
-          label="Select team color: "
+          label="Barva nového týmu:"
           options={teamColors.map(c => ({ value: c.Id.toString(), label: c.Color }))}
           selectedValue={selectedColor}
           onChange={setSelectedColor}
@@ -114,7 +115,8 @@ const EditMatchDate = () => {
                     await DeleteTeam(team.Id);
                     setTeams(prev => prev.filter(t => t.Id !== team.Id));
                   } catch (err) {
-                    toast.error("Failed to delete team:", err.message);
+                    toast.error("Odstranění se nezdařilo! V týmu nesmí být žádný hráč.", err.message);
+                    console.log(err.message);
                   }
                 }}
               />
@@ -124,7 +126,7 @@ const EditMatchDate = () => {
             {/* Add Player Dropdown */}
             <div className="team-player-controls">
               <DropdownFilter
-                label="Select player: "
+                label="Nový hráč: "
                 options={allPlayers.map(p => ({ value: p.Id.toString(), label: p.Name }))}
                 selectedValue={team.selectedPlayer || "0"}
                 onChange={(val) => {
@@ -150,7 +152,8 @@ const EditMatchDate = () => {
                       )
                     );
                   } catch (err) {
-                    toast.error("Failed to add player:", err.message);
+                    toast.error("Uložení se nezdařilo!", err.message);
+                    console.log(err.message);
                   }
                 }}
               />
@@ -181,7 +184,7 @@ const EditMatchDate = () => {
                           )
                         );
                       } catch (err) {
-                        toast.error("Failed to delete player:", err.message);
+                        toast.error("Uložení se nezdařilo! Hráč nesmí mít přiřazené žádné góly.", err.message);
                       }
                     }}
                   
@@ -195,10 +198,10 @@ const EditMatchDate = () => {
       </div>
 
       {/* Matches */}
-      <h3>Matches</h3>
+      <h3>Zápasy</h3>
       <div className="match-controls">
         <DropdownFilter
-          label="Team 1:"
+          label="Tým 1:"
           options={teams.map(t => ({
             value: t.Id.toString(),
             label: t.TeamColor?.Color || `Team ${t.Id}`
@@ -208,7 +211,7 @@ const EditMatchDate = () => {
         />
 
         <DropdownFilter
-          label="Team 2:"
+          label="Tým 2:"
           options={teams.map(t => ({
             value: t.Id.toString(),
             label: t.TeamColor?.Color || `Team ${t.Id}`
@@ -221,7 +224,7 @@ const EditMatchDate = () => {
             className="icon-btn add"
             onClick={async () => {
               if (selectedTeam1 === "0" || selectedTeam2 === "0" || selectedTeam1 === selectedTeam2) {
-                alert("Please select two different teams");
+                toast.error("Vyberte dva různé týmy.");
                 return;
               }
               try {
@@ -234,7 +237,8 @@ const EditMatchDate = () => {
                 setSelectedTeam1("0");
                 setSelectedTeam2("0");
               } catch (err) {
-                toast.error("Failed to add match:", err.message);
+                toast.error("Uložení se nezdařilo!", err.message);
+                console.log(err.message);
               }
             }}
           
@@ -254,7 +258,8 @@ const EditMatchDate = () => {
                         await DeleteMatch(m.Id);
                         setMatches(prev => prev.filter(t => t.Id !== m.Id));
                       } catch (err) {
-                        toast.error("Failed to delete match:", err.message);
+                        toast.error("Uložení se nezdařilo! Zápas musí mít nastavené skóre 0:0.", err.message);
+                        console.log(err.message);
                       }
                     }}
                   />
