@@ -40,8 +40,8 @@ const Players = () => {
         <ul className='player-list'>
           {players.map(player => (
             <Link key={player.Id} to={`/player/${player.Id}`}>
-              <li className='player-item'> 
-                <span className='player-name'>
+              <li className='players-item'> 
+                <span className='player-item-name'>
                   {player.Name}
                 </span>
               </li>

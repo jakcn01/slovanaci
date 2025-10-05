@@ -71,15 +71,9 @@
   text-decoration: underline;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .filter-bar {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .matchdates-list li {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
   }
 }

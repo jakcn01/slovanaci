@@ -15,6 +15,9 @@ const DropdownFilter = ({ label, options, selectedValue, onChange, displayEmpty 
                 onChange={(e) => onChange(e.target.value)}
             >
                 {
+                    displayEmpty && hasOptions && <option value="0">Vyberte možnost</option>
+                }
+                {
                 hasOptions
                     ? options.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -24,9 +27,6 @@ const DropdownFilter = ({ label, options, selectedValue, onChange, displayEmpty 
                     : <option value="">
                         Žádné možnosti
                       </option>
-                }
-                {
-                    displayEmpty && <option value="">Vyberte možnost</option>
                 }
             </select>
         </div>

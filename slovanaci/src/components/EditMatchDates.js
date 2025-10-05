@@ -96,10 +96,10 @@ const EditMatchDates = () => {
         <ul className="matchdates-list">
         {matchDates.map((x) => (
             <Link to={`/edit-match-date/${x.Id}`}>
-            <li key={x.Id}>
-            <span>{formatDate(x.MatchDate)}</span>
-            <FaPencilAlt className='' />
-            </li>
+                <li key={x.Id}>
+                    <span>{formatDate(x.MatchDate)}</span>
+                    <FaPencilAlt className='' />
+                </li>
             </Link>
         ))}
         </ul>
