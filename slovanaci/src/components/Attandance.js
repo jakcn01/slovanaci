@@ -8,16 +8,20 @@ const Attandance = ({ matchDates, playerMatches, teamPlayerData}) => {
     {
         return playerMatches.some(x => x === matchDate.toString())
     }
-    console.log("teamPlayerData", teamPlayerData)
     return (
         <div>
             <h2>Účast</h2>
             <p>Účast: {calculatePercentage(playerMatches.length, matchDates.length)}%</p>
             <ul>
-                {matchDates.map(x => {
+                {matchDates.map(m => {
                     return (
-                        <li key={x.Id}>
-                            <span>{formatDate(x.MatchDate)} - {wasThere(x.MatchDate) ? "Byl" : "Nebyl"}{getPlayerGoalsFinalString(teamPlayerData.find(x => x.TeamId.MatchDateID === x.Id))}</span>
+                        <li key={m.Id}>
+                            <span>
+                                <b>
+                                    {formatDate(m.MatchDate)} - {wasThere(m.MatchDate) ? "✓" : "✗"}
+                                </b>
+                                {getPlayerGoalsFinalString(teamPlayerData.filter(tp => tp.TeamId.MatchDateID.MatchDate === m.MatchDate))}
+                            </span>
                         </li>
                     )
                 })}

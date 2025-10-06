@@ -4,7 +4,7 @@ import { calculateTeamGoals, getPlayerGoalsFinalString } from '../helpers/matchH
 
 const MatchResult = ({match, showData = true}) => {
     const renderTeamPlayer = (tp) => {
-        const goalsString = getPlayerGoalsFinalString(tp)
+        const goalsString = getPlayerGoalsFinalString(tp, match.Id)
         return (
             <li key={tp.Id}>
                 {tp.Player.Name}
