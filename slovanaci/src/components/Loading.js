@@ -1,6 +1,7 @@
 import React from 'react';
 import { ClipLoader } from 'react-spinners';
-import "../App.css"
+import "../css/Loading.css"
+
 const Loading = ({ text = "Načítání dat..." }) => {
   return (
     <div className="loading-container">

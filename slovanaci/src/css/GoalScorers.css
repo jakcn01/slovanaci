@@ -1,0 +1,34 @@
+
+/* scorers table */
+.scorers-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.scorers-row {
+  cursor: pointer 
+}
+
+.sorting-button {
+  cursor: pointer 
+}
+
+.scorer-position {
+  color: #666;
+}
+
+.scorer-name {
+  color: #222;
+}
+
+.scorer-goals {
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+
+.scorer-goals-header {
+  text-align: center;
+}

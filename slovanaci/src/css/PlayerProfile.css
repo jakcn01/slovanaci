@@ -1,0 +1,9 @@
+.player-profile-container {
+  text-align: center; /* Center the content inside the container */
+}
+
+/* Player details container */
+.player-details {
+  padding: 20px; 
+  display: flex;
+}

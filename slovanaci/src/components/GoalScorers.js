@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { GetAllTeamPlayerData } from '../api/teamPlayerApi.js';
 import { GetMatchesData } from '../api/matchesApi.js';
 import DropdownFilter from './DropdownFilter.js';
+import "../css/GoalScorers.css";
 
 const GoalScorers = () => {
     const [seasons, setSeasons] = useState([]);

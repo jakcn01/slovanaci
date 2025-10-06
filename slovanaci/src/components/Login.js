@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { signIn } from "../api/authApi";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
-
+import "../css/Login.css"
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

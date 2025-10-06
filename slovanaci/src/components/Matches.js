@@ -73,7 +73,7 @@ const Matches = () => {
   }
   
   return (
-    <div className='all-matches-container'>
+    <div className='centered-text'>
       <h1>Výsledky zápasů</h1>
       <DropdownFilter
                 label="Sezóna: "

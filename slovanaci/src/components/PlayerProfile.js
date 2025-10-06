@@ -11,6 +11,7 @@ import { GetMatchDatesData } from '../api/matchDatesApi.js';
 import { calculatePlayerGoals, getPlayerStats } from '../helpers/matchHelpers.js';
 import { GetSeasonsData } from '../api/seasonsApi.js';
 import DropdownFilter from './DropdownFilter.js';
+import "../css/PlayerProfile.css"
 
 const PlayerProfile = () => {
   const { id } = useParams(); // Get the player's ID from the URL

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
 import { GetPlayersData } from '../api/playersApi';
+import "../css/Players.css"
 
 const Players = () => {
     const [players, setPlayers] = useState([]);
@@ -41,7 +42,7 @@ const Players = () => {
           {players.map(player => (
             <Link key={player.Id} to={`/player/${player.Id}`}>
               <li className='players-item'> 
-                <span className='player-item-name'>
+                <span className='players-item-name'>
                   {player.Name}
                 </span>
               </li>

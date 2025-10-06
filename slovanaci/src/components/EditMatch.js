@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import { SaveGoals } from "../api/goalsApi";
 import { GetMatchById, UpdateMatch } from "../api/matchesApi";
 import "../css/EditMatch.css";
+import "../css/Checkbox.css";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Loading from "./Loading";
+
 
 const EditMatch = () => {
   const { id } = useParams();
@@ -72,7 +74,7 @@ const EditMatch = () => {
   const renderPlayerRow = (tp) => {
     const current = goals[tp.Id] || { normal: 0, own: 0, trackOwn: false };
     return (
-      <li key={tp.Id} className="player-row">
+      <li key={tp.Id} className="edit-player-row">
         <div className="player-main">
           <span className="player-name">
               {tp.Player?.Name}
@@ -112,7 +114,7 @@ const EditMatch = () => {
   };
 
   const renderTeamColumn = (team) => (
-    <div className="team-column">
+    <div className="edit-match-team-column">
       <h3>{team.TeamColor?.Color}</h3>
       <ul>{team.Team_Players.map(renderPlayerRow)}</ul>
     </div>
