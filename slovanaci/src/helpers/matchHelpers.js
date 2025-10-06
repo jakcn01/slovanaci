@@ -96,12 +96,23 @@ export const createPlusMinus = (matches, id) =>
     return stats.goalsByTeam - stats.goalsAgainstTeam;
   }
   
-export const getPlayerGoals = (tp, ownGoal = false) => {
-    return tp.Goals.reduce((sum, g) => g.OwnGoal == ownGoal ? sum + g.GoalCount : sum, 0)
+export const getPlayerGoals = (tp, matchId, ownGoal = false) => {
+  
+  if (tp.constructor === Array)
+  {
+    return tp.reduce((sum, t) => sum + getPlayerGoals(t, matchId, ownGoal), 0)
   }
   
-export const getPlayerGoalsString = (tp, ownGoal = false) => {
-  const goalsCount = getPlayerGoals(tp, ownGoal)
+  if (matchId == null)
+  {
+    return tp.Goals.reduce((sum, g) => g.OwnGoal == ownGoal ? sum + g.GoalCount : sum, 0)
+  } 
+  
+  return tp.Goals.reduce((sum, g) => g.MatchId === matchId ? g.OwnGoal == ownGoal ? sum + g.GoalCount : sum : sum, 0)
+}
+  
+export const getPlayerGoalsString = (tp, matchId, ownGoal = false) => {
+  const goalsCount = getPlayerGoals(tp, matchId, ownGoal)
   if (ownGoal === true)
   {
     return goalsCount === 0 ? "" :` [vl. ${goalsCount}]`;
@@ -109,10 +120,10 @@ export const getPlayerGoalsString = (tp, ownGoal = false) => {
   return goalsCount !== 0 ? ` - ${goalsCount}` : ''
 }
 
-export const getPlayerGoalsFinalString = (tp) => {
+export const getPlayerGoalsFinalString = (tp, matchId) => {
   if (tp)
   {
-    return getPlayerGoalsString(tp) + getPlayerGoalsString(tp, true)
+    return getPlayerGoalsString(tp, matchId) + getPlayerGoalsString(tp, matchId, true)
   }
   return ""
 }

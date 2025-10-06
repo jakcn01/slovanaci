@@ -23,9 +23,7 @@ export const GetMatchesData = async (seasonId) => {
             MatchDateId!inner ( Id, MatchDate, SeasonId )`
         )
         .eq('MatchDateId.SeasonId', seasonId); // Ensures only correct season matches are included
-
     if (matchesError) throw matchesError;
-    
     return matchesData ?? []; // Return empty array if no valid data
 };
 

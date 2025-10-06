@@ -35,9 +35,12 @@ const PlayerProfile = () => {
         
         const teamPlayersData = await GetTeamPlayerDataByPlayer(id)
         const matchesData = await GetMatchesData(seasonFilter);
-        const playersMatches = matchesData.filter(x => teamPlayersData.some(y =>  y.TeamId === x.Team1.Id) || teamPlayersData.find(y =>  y.TeamId === x.Team2.Id))
+        const playersMatches = matchesData.filter(m => 
+          teamPlayersData.some(tp => tp.TeamId.Id === m.Team1.Id) || 
+          teamPlayersData.some(tp => tp.TeamId.Id === m.Team2.Id))
         const playerAttandance = [...new Set(playersMatches.map(x => {return x.MatchDateId.MatchDate}))]
         setPlayerStats(teamPlayersData)
+        
         setPlayerMatches(playerAttandance)
         setScore(getPlayerStats(playersMatches, id))
         
