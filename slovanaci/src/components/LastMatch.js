@@ -4,8 +4,9 @@ import MatchResult from './MatchResult';
 import { GetExtendedMatchesData } from '../api/matchesApi';
 import { GetAllMatchDatesData } from '../api/matchDatesApi';
 import { formatDate } from '../helpers/dateHelpers';
-import { calculateStandings } from '../helpers/matchHelpers';
-import { GetTeamPlayerDataByTeam } from '../api/teamPlayerApi';
+import { GetTeamsForMatchDate } from '../api/teamsApi';
+import { calculateStandings, getTeamName } from '../helpers/matchHelpers';
+import { GetTeamPlayerDataByMatchDateId, GetTeamPlayerDataByTeam } from '../api/teamPlayerApi';
 
 const LastMatch = () => {
   const [teams, setTeams] = useState([]);
@@ -24,6 +25,7 @@ const LastMatch = () => {
         // Calculate the last date
         const sortedMatchDates = matchDates.sort((a, b) => new Date(a.MatchDate) - new Date(b.MatchDate));
         const lastDate = sortedMatchDates[sortedMatchDates.length - 1].MatchDate;
+        const lastDateId = sortedMatchDates[sortedMatchDates.length - 1].Id;
         setLastDate(lastDate);
   
         // Filter matches for the last date
@@ -36,9 +38,11 @@ const LastMatch = () => {
           setStandings(standingsTable)
           if (standingsTable.length > 0) {
             // Resolve all team data with color and players
-            const teamDataPromises = standingsTable.map(async x => {
-              const players = await GetTeamPlayerDataByTeam(x.teamId);
-              return { color: x.teamColor, players };
+
+            const teams = await GetTeamsForMatchDate(lastDateId);
+            const teamDataPromises = teams.map(async x => {
+              const players = await GetTeamPlayerDataByTeam(x.Id);
+              return { name: getTeamName(x), players };
             });
 
             const resolvedTeams = await Promise.all(teamDataPromises);
@@ -85,7 +89,7 @@ const LastMatch = () => {
               {
                 teams.map(team => (
                   <div key={team.Id}>
-                    <h2>{team.color}</h2>
+                    <h2>{team.name}</h2>
                     <div className='team'>
                       <ul>
                         {team.players.map(x => (

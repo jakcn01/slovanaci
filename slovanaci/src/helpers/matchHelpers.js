@@ -11,8 +11,8 @@ export const calculateStandings = (matchesData) => {
   const standings = {};
 
   matchesData.forEach(match => {
-      const team1Id = match.Team1.Id;
-      const team2Id = match.Team2.Id;
+      const team1Id = match.Team1.TeamColor.Id;
+      const team2Id = match.Team2.TeamColor.Id;
 
       const team1Goals = calculateTeamGoals(match.Team1.Team_Players,match.Team2.Team_Players, match);
       const team2Goals = calculateTeamGoals(match.Team2.Team_Players,match.Team1.Team_Players, match);
@@ -126,4 +126,11 @@ export const getPlayerGoalsFinalString = (tp, matchId) => {
     return getPlayerGoalsString(tp, matchId) + getPlayerGoalsString(tp, matchId, true)
   }
   return ""
+}
+
+export const getTeamName = (team) => {
+  if (team.TeamName) {
+    return team.TeamName;
+  }
+  return team.TeamColor?.Color;
 }

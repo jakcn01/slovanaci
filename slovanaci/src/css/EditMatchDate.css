@@ -151,3 +151,18 @@ button.link {
   display: flex;
   gap: 8px;
 }
+
+.dropdown-select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+} 
+
+.team-name-input {
+  padding: 6px 10px;
+  max-width: max-content;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+}

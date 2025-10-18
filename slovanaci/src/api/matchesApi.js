@@ -34,7 +34,8 @@ export const GetExtendedMatchesData = async () => {
         Id,
         Team1 (
             Id,
-            TeamColor (Color),
+            TeamName,
+            TeamColor (Id, Color),
             Team_Players (
             Id,
             Player:PlayerId (Id, Name),
@@ -43,11 +44,12 @@ export const GetExtendedMatchesData = async () => {
             ),
         Team2 (
             Id,
-            TeamColor (Color),
+            TeamName,
+            TeamColor (Id, Color),
             Team_Players (
-            Id,
-            Player:PlayerId (Id, Name),
-            Goals (GoalCount, MatchId, OwnGoal)
+              Id,
+              Player:PlayerId (Id, Name),
+              Goals (GoalCount, MatchId, OwnGoal)
             )
         ),
         MatchOrder,
@@ -62,18 +64,45 @@ export const GetExtendedMatchesData = async () => {
 
 export const GetMatchesForMatchDate = async (matchDateId) => {
   const { data, error } = await supabase
-    .from('Matches')
-    .select('Id, Team1:Team1 (Id, TeamColor:TeamColorId (Id, Color)), Team2:Team2 (Id, TeamColor:TeamColorId (Id, Color))')
-    .eq('MatchDateId', matchDateId);
+        .from('Matches')
+        .select(`
+        Id,
+        Team1 (
+            Id,
+            TeamName,
+            TeamColor (Color),
+            Team_Players (
+            Id,
+            Player:PlayerId (Id, Name),
+            Goals (GoalCount, MatchId, OwnGoal)
+            )
+            ),
+        Team2 (
+            Id,
+            TeamName,
+            TeamColor (Color),
+            Team_Players (
+              Id,
+              Player:PlayerId (Id, Name),
+              Goals (GoalCount, MatchId, OwnGoal)
+            )
+        ),
+        MatchOrder,
+        MatchDates:MatchDates (
+            MatchDate, Id, SeasonId
+        )
+        `)
+    .eq('MatchDateId', matchDateId)
+    .order('MatchOrder', { ascending: true });
   if (error) throw error;
   return data;
 };
 
-export const AddMatch = async (matchDateId, team1Id, team2Id) => {
+export const AddMatch = async (matchDateId, team1Id, team2Id, order) => {
   const { data, error } = await supabase
     .from('Matches')
-    .insert([{ MatchDateId: matchDateId, Team1: team1Id, Team2: team2Id }])
-    .select('Id, Team1:Team1 (Id, TeamColor:TeamColorId (Id, Color)), Team2:Team2 (Id, TeamColor:TeamColorId (Id, Color))')
+    .insert([{ MatchDateId: matchDateId, Team1: team1Id, Team2: team2Id, MatchOrder: order, OutsidePitch: false, SmallGame: true }])
+    .select('Id, Team1:Team1 (Id, TeamColor:TeamColorId (Id, Color)), Team2:Team2 (Id, TeamColor:TeamColorId (Id, Color)), MatchOrder')
     .single();
 
   if (error) throw error;
@@ -89,6 +118,7 @@ export const DeleteMatch = async (Id) => {
   if (error) throw error;
   return true;
 };
+
 export const GetMatchById = async (matchId) => {
   const { data, error } = await supabase
     .from("Matches")
@@ -96,6 +126,7 @@ export const GetMatchById = async (matchId) => {
       Id,
       OutsidePitch,
       SmallGame,
+      MatchOrder,
       Team1:Team1 (
         Id,
         TeamColor:TeamColorId (Id, Color),
@@ -133,7 +164,6 @@ export const GetMatchById = async (matchId) => {
   if (error) throw error;
   return data;
 };
-
 
 export const UpdateMatch = async (matchId, updates) => {
   const { error } = await supabase

@@ -7,3 +7,15 @@ export const GetTeamColors = async () => {
   if (error) throw error;
   return data;
 };
+
+
+export const GetTeamColor = async (id) => {
+  const { data, error } = await supabase
+    .from('TeamColor')
+    .select('*')
+    .eq('Id', id)
+    .single();
+    
+  if (error) throw error;
+  return data;
+};

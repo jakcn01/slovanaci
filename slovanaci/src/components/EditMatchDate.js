@@ -11,6 +11,7 @@ import DropdownFilter from "./DropdownFilter";
 import "../css/EditMatchDate.css"; // import CSS
 import { toast } from "react-toastify";
 import Loading from "./Loading";
+import { calculateTeamGoals, getTeamName } from "../helpers/matchHelpers";
 
 const EditMatchDate = () => {
   const { id } = useParams(); 
@@ -23,6 +24,7 @@ const EditMatchDate = () => {
   const [teamColors, setTeamColors] = useState([]);
   const [selectedTeam1, setSelectedTeam1] = useState("0");
   const [selectedTeam2, setSelectedTeam2] = useState("0");
+  const [newTeamName, setNewTeamName] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,11 +93,20 @@ const EditMatchDate = () => {
           displayEmpty
         />
 
+          <input
+            type="text"
+            placeholder="Název týmu"
+            value={newTeamName}
+            maxlength="30"
+            onChange={(e) => setNewTeamName(e.target.value)}
+            className="team-name-input"
+          />
+        
           <FaPlus 
             className="icon-btn add"
             onClick={async () => {
               if (selectedColor === "0") return;
-              const newTeam = await AddTeam(id, parseInt(selectedColor, 10));
+              const newTeam = await AddTeam(id, parseInt(selectedColor, 10), newTeamName);
               setTeams(prev => [...prev, newTeam]);
               setSelectedColor("0");
             }}
@@ -107,7 +118,7 @@ const EditMatchDate = () => {
         {teams.map((team) => (
           <div key={team.Id} className="team-card">
             <div className="team-header">
-              <strong>{team.TeamColor?.Color}</strong>
+              <strong>{getTeamName(team)}</strong>
               
                 <FaTimes 
                 className="icon-btn remove"
@@ -206,7 +217,7 @@ const EditMatchDate = () => {
           label="Tým 1:"
           options={teams.map(t => ({
             value: t.Id.toString(),
-            label: t.TeamColor?.Color || `Team ${t.Id}`
+            label: getTeamName(t)
           }))}
           selectedValue={selectedTeam1}
           onChange={setSelectedTeam1}
@@ -217,7 +228,7 @@ const EditMatchDate = () => {
           label="Tým 2:"
           options={teams.map(t => ({
             value: t.Id.toString(),
-            label: t.TeamColor?.Color || `Team ${t.Id}`
+            label: getTeamName(t)
           }))}
           selectedValue={selectedTeam2}
           onChange={setSelectedTeam2}
@@ -235,7 +246,8 @@ const EditMatchDate = () => {
                 const newMatch = await AddMatch(
                   id,
                   parseInt(selectedTeam1, 10),
-                  parseInt(selectedTeam2, 10)
+                  parseInt(selectedTeam2, 10),
+                  matches.length + 1
                 );
                 setMatches(prev => [...prev, newMatch]);
                 setSelectedTeam1("0");
@@ -248,12 +260,11 @@ const EditMatchDate = () => {
           
           />
       </div>
-
       <ul className="match-list">
         {matches.map((m) => (
           <li key={m.Id} className="match-card">
             <div className="match-header">
-              <span>{m.Team1?.TeamColor?.Color} vs {m.Team2?.TeamColor?.Color}</span>
+              <span>{m.MatchOrder} - {getTeamName(m.Team1)} vs {getTeamName(m.Team2)} ({calculateTeamGoals(m.Team1.Team_Players,m.Team2.Team_Players, m)}:{calculateTeamGoals(m.Team2.Team_Players,m.Team1.Team_Players, m)})</span>
               <div className="match-actions">
                   <FaTimes 
                     className="icon-btn remove"

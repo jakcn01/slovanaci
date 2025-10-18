@@ -1,19 +1,26 @@
 import { supabase } from './supabase.js';
+import { GetTeamColor } from './teamColorsApi.js';
 
 export const GetTeamsForMatchDate = async (matchDateId) => {
   const { data, error } = await supabase
     .from('Teams')
-    .select('Id, TeamColorId, TeamColor(Color), Team_Players(*, Players(*))')
+    .select('Id, TeamColorId, TeamName, TeamColor(Color), Team_Players(*, Players(*))')
     .eq('MatchDateID', matchDateId);
   if (error) throw error;
   return data;
 };
 
-export const AddTeam = async (matchDateId, teamColorId) => {
+export const AddTeam = async (matchDateId, teamColorId, teamName = "") => {
+  
+  if (teamName === "") {
+    const tc = await GetTeamColor(teamColorId);
+    teamName = tc.Color;
+  }
+
   const { data, error } = await supabase
     .from("Teams")
-    .insert([{ MatchDateID: matchDateId, TeamColorId: teamColorId }])
-    .select("Id, TeamColorId, TeamColor(Color), Team_Players(Id, PlayerId, Players(Name))")
+    .insert([{ MatchDateID: matchDateId, TeamColorId: teamColorId, TeamName: teamName}])
+    .select("Id, TeamName, TeamColorId, TeamColor(Color), Team_Players(Id, PlayerId, Players(Name))")
     .single();
 
   if (error) throw error;
