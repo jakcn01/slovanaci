@@ -249,7 +249,8 @@ const EditMatchDate = () => {
                   parseInt(selectedTeam2, 10),
                   matches.length + 1
                 );
-                setMatches(prev => [...prev, newMatch]);
+                const m = await GetMatchesForMatchDate(id);
+                setMatches(m);
                 setSelectedTeam1("0");
                 setSelectedTeam2("0");
               } catch (err) {
