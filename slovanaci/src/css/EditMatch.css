@@ -1,7 +1,9 @@
 .edit-match-container {
   max-width: 900px;
   margin: 20px auto;
+  margin-top: 0px;
   padding: 20px;
+  padding-top: 10px;
   font-family: Arial, sans-serif;
 }
 
@@ -15,7 +17,7 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .match-details label {
@@ -128,21 +130,6 @@
   visibility: visible;
 }
 
-.save-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background: #4CAF50;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.save-button:hover {
-  background: #45a049;
-}
-
 .own-goal-controls {
   background-color: #FFADB0;
 
@@ -166,4 +153,44 @@
     align-items: flex-start;
     gap: 10px;
   }
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between; /* left + right */
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 5px; /* small padding for nicer alignment */
+}
+
+.btn {
+  padding: 8px 18px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; /* space between icon + text */
+  height: 40px; /* consistent height */
+  font-weight: 500;
+}
+
+.btn-grey {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.btn-grey:hover {
+  background-color: #a5a5a5;
+}
+
+/* Green save button (example, keep your current color if needed) */
+.btn-green {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-green:hover {
+  background-color: #218838;
 }

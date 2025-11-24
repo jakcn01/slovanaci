@@ -8,13 +8,16 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Loading from "./Loading";
 import { getTeamName } from "../helpers/matchHelpers";
-
+import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 
 const EditMatch = () => {
   const { id } = useParams();
   const [match, setMatch] = useState(null);
   const [goals, setGoals] = useState({});
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchMatch = async () => {
       try {
@@ -125,8 +128,31 @@ const EditMatch = () => {
     <div className="edit-match-container">
       <h1>{getTeamName(match.Team1)} vs {getTeamName(match.Team2)}</h1>
 
+      <div className="button-row">
+        <button className="btn btn-grey" onClick={() => navigate(-1)}>
+          <FaArrowLeft /> 
+          Zpět
+        </button>
+
+        <button className="btn btn-green" onClick={handleSave}>
+          Uložit
+        </button>
+      </div>
+
       <div className="top-bar">
         <div className="match-details">
+
+          <div className="goal-controls">
+            Pořadí zápasu:
+            <FaMinus className="goal-button" onClick={() =>
+              setMatch((prev) => ({ ...prev, MatchOrder: prev.MatchOrder > 1 ? prev.MatchOrder - 1 : 1 }))
+            } />
+              <span className="goal-count">{match.MatchOrder}</span>
+            <FaPlus className="goal-button" onClick={() =>
+              setMatch((prev) => ({ ...prev, MatchOrder: prev.MatchOrder + 1 }))
+            }/>
+          </div>
+
           <label className="checkbox-container">
             <input
               className="green-checkbox"
@@ -149,20 +175,9 @@ const EditMatch = () => {
               }
             />
               Turnájek
-            </label>        
-            <div className="goal-controls">
-              Pořadí zápasu:
-              <FaMinus className="goal-button" onClick={() =>
-                setMatch((prev) => ({ ...prev, MatchOrder: prev.MatchOrder > 1 ? prev.MatchOrder - 1 : 1 }))
-              } />
-                <span className="goal-count">{match.MatchOrder}</span>
-              <FaPlus className="goal-button" onClick={() =>
-                setMatch((prev) => ({ ...prev, MatchOrder: prev.MatchOrder + 1 }))
-              }/>
-            </div>
-          </div>
+          </label>     
 
-        <button className="save-button" onClick={handleSave}>Uložit</button>
+          </div>
       </div>
 
       <div className="teams-container">
