@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/slovanaci/static/css/main.f1af9fa4.css",
-    "main.js": "/slovanaci/static/js/main.bd1848e2.js",
+    "main.css": "/slovanaci/static/css/main.2ca73875.css",
+    "main.js": "/slovanaci/static/js/main.95ac4a1d.js",
     "static/js/952.3bd1e58f.chunk.js": "/slovanaci/static/js/952.3bd1e58f.chunk.js",
     "index.html": "/slovanaci/index.html",
-    "main.f1af9fa4.css.map": "/slovanaci/static/css/main.f1af9fa4.css.map",
-    "main.bd1848e2.js.map": "/slovanaci/static/js/main.bd1848e2.js.map",
+    "main.2ca73875.css.map": "/slovanaci/static/css/main.2ca73875.css.map",
+    "main.95ac4a1d.js.map": "/slovanaci/static/js/main.95ac4a1d.js.map",
     "952.3bd1e58f.chunk.js.map": "/slovanaci/static/js/952.3bd1e58f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f1af9fa4.css",
-    "static/js/main.bd1848e2.js"
+    "static/css/main.2ca73875.css",
+    "static/js/main.95ac4a1d.js"
   ]
 }
