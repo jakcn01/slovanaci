@@ -142,7 +142,7 @@ const EditMatch = () => {
       <div className="top-bar">
         <div className="match-details">
 
-          <div className="goal-controls">
+          <div className="match-order-controls">
             Pořadí zápasu:
             <FaMinus className="goal-button" onClick={() =>
               setMatch((prev) => ({ ...prev, MatchOrder: prev.MatchOrder > 1 ? prev.MatchOrder - 1 : 1 }))
