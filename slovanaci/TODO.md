@@ -1,2 +1,2 @@
-1. je treba dodelat sezony - je na to vlastni branch
-2. sortovani v tabulce strelcu se neresetuje po zmene filteru
+1. sortovani v tabulce strelcu se neresetuje po zmene filteru
+2. filtrovani podle typu zapasu na player profilu

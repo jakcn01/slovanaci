@@ -28,7 +28,7 @@ const EditMatchDates = () => {
         setLoading(true); // Reset loading state on id change        
         
         const matchDatesData = await GetMatchDatesData(seasonFilter); 
-        setMatchDates(matchDatesData)
+        setMatchDates(matchDatesData.sort((a, b) => new Date(b.MatchDate) - new Date(a.MatchDate))); // last match date first
         const sortedSeasons = await GetSeasonsData();
                 
         const seasonFilterOptions = sortedSeasons.map(season => {

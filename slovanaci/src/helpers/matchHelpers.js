@@ -17,8 +17,8 @@ export const calculateStandings = (matchesData) => {
       const team1Goals = calculateTeamGoals(match.Team1.Team_Players,match.Team2.Team_Players, match);
       const team2Goals = calculateTeamGoals(match.Team2.Team_Players,match.Team1.Team_Players, match);
 
-      if (!standings[team1Id]) standings[team1Id] = { wins: 0, draws: 0, losses: 0, points: 0, goalsScored: 0, goalsConceded: 0, teamColor: match.Team1.TeamColor.Color };
-      if (!standings[team2Id]) standings[team2Id] = { wins: 0, draws: 0, losses: 0, points: 0, goalsScored: 0, goalsConceded: 0, teamColor: match.Team2.TeamColor.Color  };
+      if (!standings[team1Id]) standings[team1Id] = { wins: 0, draws: 0, losses: 0, points: 0, goalsScored: 0, goalsConceded: 0, teamColor: match.Team1.TeamName };
+      if (!standings[team2Id]) standings[team2Id] = { wins: 0, draws: 0, losses: 0, points: 0, goalsScored: 0, goalsConceded: 0, teamColor: match.Team2.TeamName };
 
       standings[team1Id].goalsScored += team1Goals;
       standings[team1Id].goalsConceded += team2Goals;
@@ -134,3 +134,18 @@ export const getTeamName = (team) => {
   }
   return team.TeamColor?.Color;
 }
+
+export const getPlayerMatchDates = (matches, playerId) => {
+  const playerMatches = matches.filter(match => 
+    match.Team1.Team_Players.some(p => p.PlayerId == playerId) ||
+    match.Team2.Team_Players.some(p => p.PlayerId == playerId)
+  );
+
+  const uniqueDates = [
+    ...new Map(
+      playerMatches.map(m => [m.MatchDateId.Id, m.MatchDateId.MatchDate])
+    ).values()
+  ];
+
+  return uniqueDates;
+};

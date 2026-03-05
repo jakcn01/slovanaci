@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import Loading from './Loading';
 import { GetGoalsData } from '../api/goalsApi';
 import { GetSeasonsData } from '../api/seasonsApi.js';
-import { GetSimplePlayerData } from '../api/playersApi';
-import { calculatePlayerGoals, createPlusMinus } from '../helpers/matchHelpers';
+import { GetSimplePlayerDataForSeason } from '../api/playersApi';
+import { calculatePlayerGoals, createPlusMinus, getPlayerMatchDates } from '../helpers/matchHelpers';
 import { useNavigate } from 'react-router-dom';
 import { GetAllTeamPlayerData } from '../api/teamPlayerApi.js';
 import { GetMatchesData } from '../api/matchesApi.js';
@@ -32,7 +32,7 @@ const GoalScorers = () => {
         const fetchPlayers = async () => {
             try {
                 setLoading(true);
-                const playersData = await GetSimplePlayerData();
+                const playersData = await GetSimplePlayerDataForSeason(seasonFilter, filter);
                 const goalsData = await GetGoalsData(seasonFilter);
                 const teamPlayersData = await GetAllTeamPlayerData();
                 const matchesData = await GetMatchesData(seasonFilter);
@@ -45,6 +45,7 @@ const GoalScorers = () => {
                 const playerGoals = playersData.map(player => ({
                     Id: player.Id,
                     Goals: calculatePlayerGoals(player.Id, filteredGoals),
+                    AttandedMatches: getPlayerMatchDates(filteredMatches, player.Id).length,
                     PlusMinus: createPlusMinus(
                         filteredMatches.filter(
                             x =>
@@ -166,6 +167,9 @@ const GoalScorers = () => {
                         <th className='scorer-goals-header sorting-button' onClick={() => handleSort('PlusMinus')}>
                             +/- {getSortSymbol('PlusMinus')}
                         </th>
+                        <th className='scorer-goals-header sorting-button' onClick={() => handleSort('AttandedMatches')}>
+                            Z {getSortSymbol('AttandedMatches')}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -181,6 +185,7 @@ const GoalScorers = () => {
                                 <td className='scorer-name'>{player.Name}</td>
                                 <td className='scorer-goals'>{playerGoal.Goals}</td>
                                 <td className='scorer-goals'>{playerGoal.PlusMinus}</td>
+                                <td className='scorer-goals'>{playerGoal.AttandedMatches}</td>
                             </tr>
                         );
                     })}
