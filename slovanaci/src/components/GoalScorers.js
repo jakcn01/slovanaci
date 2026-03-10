@@ -57,7 +57,8 @@ const GoalScorers = () => {
                 }));
 
                 const rankedPlayerGoals = rankPlayersByGoals(playerGoals);
-                setPlayerGoals(rankedPlayerGoals);
+                const sortedPlayerGoals = sortPlayers(rankedPlayerGoals, sortConfig.key, sortConfig.direction);
+                setPlayerGoals(sortedPlayerGoals);
 
                 const sortedSeasons = await GetSeasonsData();
         
@@ -108,6 +109,14 @@ const GoalScorers = () => {
         });
     };
 
+    const sortPlayers = (data, key, direction) => {
+        return [...data].sort((a, b) => {
+            if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
+            if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+    };
+
     const handleSort = (key) => {
         let direction = 'desc';
         if (sortConfig.key === key && sortConfig.direction === 'desc') {
@@ -115,11 +124,7 @@ const GoalScorers = () => {
         }
         setSortConfig({ key, direction });
 
-        const sortedData = [...playerGoals].sort((a, b) => {
-            if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
-            if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
-            return 0;
-        });
+        const sortedData = sortPlayers(playerGoals, key, direction);
 
         setPlayerGoals(sortedData);
     };
