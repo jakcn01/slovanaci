@@ -25,7 +25,7 @@ jobs:
             exit 1
           fi
 
-          TABLE="${SUPABASE_PING_TABLE:-teams}"
+          TABLE="${SUPABASE_PING_TABLE:-Teams}"
           URL="${SUPABASE_URL}/rest/v1/${TABLE}?select=*&limit=1"
 
           status_code=$(curl -sS -o response.json -w "%{http_code}" \
