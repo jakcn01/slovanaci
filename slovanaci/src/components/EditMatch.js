@@ -96,7 +96,7 @@ const EditMatch = () => {
                 className="red-checkbox"
                 type="checkbox" 
                 checked={current.trackOwn || false} 
-                onChange={(e) => setGoals(prev => ({ ...prev, [tp.Id]: { ...current, trackOwn: e.target.checked } }))}/>
+                onChange={(e) => setGoals(prev => ({ ...prev, [tp.Id]: { ...current, trackOwn: e.target.checked || false} }))}/>
             Vlastňák?
           </label>
           <div

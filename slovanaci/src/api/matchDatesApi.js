@@ -38,6 +38,19 @@ export const UpdateMatchDate = async (id, matchDate, seasonId) => {
   return data;
 };
 
+export const LockMatchDate = async (id, lock) => {
+  const { data, error } = await supabase
+    .from('MatchDates')
+    .update({ Locked: lock })
+    .eq('Id', id)
+    .select()
+    .single();
+ if (error) throw error;
+  return data;
+};
+
+
+
 export const AddMatchDate = async (seasonId, matchDate) => {
   const { data, error } = await supabase
     .from('MatchDates')

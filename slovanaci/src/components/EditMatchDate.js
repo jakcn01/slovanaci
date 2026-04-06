@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FaPlus, FaTimes, FaPencilAlt } from "react-icons/fa"; // icons
 import { GetPlayersData } from "../api/playersApi";
-import { GetMatchDateById, UpdateMatchDate } from "../api/matchDatesApi";
+import { GetMatchDateById, UpdateMatchDate, LockMatchDate } from "../api/matchDatesApi";
 import { AddTeamPlayer, DeleteTeamPlayer } from "../api/teamPlayerApi";
 import { GetTeamColors } from "../api/teamColorsApi";
 import { AddTeam, DeleteTeam, GetTeamsForMatchDate } from "../api/teamsApi";
@@ -64,6 +64,25 @@ const EditMatchDate = () => {
     }
   };
 
+  const handleLockChange = async (e) => {
+    if (e.target.checked) {
+      console.log("Locking match date");
+      // calculate standings and assign winners for this match date
+    }
+    else 
+    {
+      console.log("Unlocking match date");
+      // Delete all winners for this match date
+    }
+    try {
+      const updated = await LockMatchDate(id, e.target.checked);
+      setMatchDate(updated);
+    } catch (err) {
+      toast.error("Uložení se nezdařilo!", err);
+      console.log(err.message);
+    }
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -71,6 +90,15 @@ const EditMatchDate = () => {
   return (
     <div className="edit-match-date">
       <h2>Upravit herní den</h2>
+          
+      <label className="checkbox-container">
+          <input 
+              className="red-checkbox"
+              type="checkbox" 
+              checked={matchDate.Locked || false} 
+              onChange={handleLockChange}/>
+          Uzamčené 
+        </label>
 
       {/* Date */}
       <label>
@@ -79,12 +107,13 @@ const EditMatchDate = () => {
           type="date"
           value={matchDate.MatchDate.split("T")[0]}
           onChange={handleDateChange}
+          disabled={matchDate.Locked}
         />
       </label>
 
       {/* Teams */}
       <h3>Týmy</h3>
-      <div className="team-controls">
+      {!matchDate.Locked && <div className="team-controls">
         <DropdownFilter
           label="Barva nového týmu:"
           options={teamColors.map(c => ({ value: c.Id.toString(), label: c.Color }))}
@@ -112,7 +141,7 @@ const EditMatchDate = () => {
             }}
           
           />
-      </div>
+      </div>}
 
       <div className="team-grid">
         {teams.map((team) => (
@@ -120,7 +149,7 @@ const EditMatchDate = () => {
             <div className="team-header">
               <strong>{getTeamName(team)}</strong>
               
-                <FaTimes 
+                {!matchDate.Locked && <FaTimes 
                 className="icon-btn remove"
                 onClick={async () => {
                   try {
@@ -131,12 +160,12 @@ const EditMatchDate = () => {
                     console.log(err.message);
                   }
                 }}
-              />
+              />}
                 
             </div>
 
             {/* Add Player Dropdown */}
-            <div className="team-player-controls">
+            {!matchDate.Locked && <div className="team-player-controls">
               <DropdownFilter
                 label="Nový hráč: "
                 options={allPlayers.map(p => ({ value: p.Id.toString(), label: p.Name }))}
@@ -172,7 +201,7 @@ const EditMatchDate = () => {
               />
                 
                 
-            </div>
+            </div>}
 
             {/* Existing Players */}
             <ul className="player-list">
@@ -181,7 +210,7 @@ const EditMatchDate = () => {
                     <span>
                       {tp.Players?.Name}
                     </span>
-                    <FaTimes 
+                    {!matchDate.Locked && <FaTimes 
                     className="icon-btn remove small"
                     onClick={async () => {
                       try {
@@ -202,7 +231,7 @@ const EditMatchDate = () => {
                     }}
                   
                     
-                    />
+                    />}
                 </li>
               ))}
             </ul>
@@ -212,7 +241,7 @@ const EditMatchDate = () => {
 
       {/* Matches */}
       <h3>Zápasy</h3>
-      <div className="match-controls">
+      {!matchDate.Locked && <div className="match-controls">
         <DropdownFilter
           label="Tým 1:"
           options={teams.map(t => ({
@@ -260,14 +289,14 @@ const EditMatchDate = () => {
             }}
           
           />
-      </div>
+      </div>}
       <ul className="match-list">
         {matches.map((m) => (
           <li key={m.Id} className="match-card">
             <div className="match-header">
               <span>{m.MatchOrder} - {getTeamName(m.Team1)} vs {getTeamName(m.Team2)} ({calculateTeamGoals(m.Team1.Team_Players,m.Team2.Team_Players, m)}:{calculateTeamGoals(m.Team2.Team_Players,m.Team1.Team_Players, m)})</span>
               <div className="match-actions">
-                  <FaTimes 
+                  {!matchDate.Locked && <FaTimes 
                     className="icon-btn remove"
                     onClick={async () => {
                       try {
@@ -278,10 +307,10 @@ const EditMatchDate = () => {
                         console.log(err.message);
                       }
                     }}
-                  />
-                <Link to={`/edit-match/${m.Id}`} className="icon-btn edit">
+                  />}
+                {(!matchDate.Locked && <Link to={`/edit-match/${m.Id}`} className="icon-btn edit">
                   <FaPencilAlt />
-                </Link>
+                </Link>)}
               </div>
             </div>
           </li>
