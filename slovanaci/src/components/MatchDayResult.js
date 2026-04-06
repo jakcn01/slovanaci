@@ -5,31 +5,38 @@ import { GetExtendedMatchesData } from '../api/matchesApi';
 import { GetAllMatchDatesData } from '../api/matchDatesApi';
 import { formatDate } from '../helpers/dateHelpers';
 import { GetTeamsForMatchDate } from '../api/teamsApi';
-import { calculateStandings, getTeamName } from '../helpers/matchHelpers';
-import { GetTeamPlayerDataByMatchDateId, GetTeamPlayerDataByTeam } from '../api/teamPlayerApi';
+import { getPlayerTotalGoals, calculateStandings, getTeamName } from '../helpers/matchHelpers';
+import { GetTeamPlayerDataByTeam } from '../api/teamPlayerApi';
 
-const LastMatch = () => {
+const MatchDayResult = ({matchDayDateId = null}) => {
   const [teams, setTeams] = useState([]);
   const [matches, setMatches] = useState([]);
-  const [lastDate, setLastDate] = useState(null);
+  const [date, setDate] = useState(null);
   const [loading, setLoading] = useState(true); // Add loading state
   const [error, setError] = useState(null); // Add error state
   const [standings, setStandings] = useState(null); 
 
   useEffect(() => {
     const fetchMatches = async () => {
-      try {
-        const matchesData = await GetExtendedMatchesData();
-        const matchDates = await GetAllMatchDatesData();
-        
+      const matchDates = await GetAllMatchDatesData();
+
+      if (matchDayDateId === null) {
         // Calculate the last date
         const sortedMatchDates = matchDates.sort((a, b) => new Date(a.MatchDate) - new Date(b.MatchDate));
-        const lastDate = sortedMatchDates[sortedMatchDates.length - 1].MatchDate;
-        const lastDateId = sortedMatchDates[sortedMatchDates.length - 1].Id;
-        setLastDate(lastDate);
-  
+        const lastDate = sortedMatchDates[sortedMatchDates.length - 1];
+        setDate(lastDate);
+      }
+      else
+      {
+        const selectedDate = matchDates.find(x => x.Id == matchDayDateId);
+        setDate(selectedDate);
+      }
+
+
+      try {
         // Filter matches for the last date
-        const filteredMatches = matchesData.filter(x => x.MatchDates.MatchDate === lastDate);
+        const matchesData = await GetExtendedMatchesData();
+        const filteredMatches = matchesData.filter(x => x.MatchDates.MatchDate === date?.MatchDate);
         setMatches(filteredMatches);
   
         // If matches are available, calculate standings
@@ -39,7 +46,7 @@ const LastMatch = () => {
           if (standingsTable.length > 0) {
             // Resolve all team data with color and players
 
-            const teams = await GetTeamsForMatchDate(lastDateId);
+            const teams = await GetTeamsForMatchDate(date?.Id);
             const teamDataPromises = teams.map(async x => {
               const players = await GetTeamPlayerDataByTeam(x.Id);
               return { name: getTeamName(x), players };
@@ -59,7 +66,7 @@ const LastMatch = () => {
     
     fetchMatches();
     // Empty dependency array to ensure the effect runs only on mount
-  }, []);
+  }, [ date?.Id, date?.MatchDate, matchDayDateId]);
   
   if (loading) {
     return <Loading />;
@@ -69,23 +76,28 @@ const LastMatch = () => {
     return <div>Error: {error}</div>; // Display error message
   }
   
-  const header = matches.length === 1 ? "Poslední výsledek" : "Výsledky posledního dne";
+  const header = matches.length === 1 ? "Výsledek dne" : "Výsledky dne";
   
-  return matches.length === 1 ? 
+  return matches.filter(x => x.SmallGame === true).length === 0 ? 
   (
-    <MatchResult match={matches[0]} showData={false} />
+    <div>
+      <h2>{header} {formatDate(date?.MatchDate)}</h2>
+      {
+        matches.map(x => {
+              return <MatchResult match={x} key={x.Id} />
+        }) 
+      }
+    </div>
   ) : 
   (
     <div>
-      <h2>{header}</h2>
-      <h2>{formatDate(lastDate)}</h2>
+      <h2>{header} {formatDate(date?.MatchDate)}</h2>
       <div className='matches-container'>
         <div className='right-half-column'>
           <div className='stick'>
             <div className='flex-center-container'>
             <div className='max-w-600'>
               <div className='flex-center-container all-teams'>
-
               {
                 teams.map(team => (
                   <div key={team.Id}>
@@ -95,6 +107,7 @@ const LastMatch = () => {
                         {team.players.map(x => (
                           <li key={x.Player.Id}>
                             {x.Player.Name}
+                            {getPlayerTotalGoals(x)}
                           </li>
                           )
                         )}
@@ -105,7 +118,7 @@ const LastMatch = () => {
                 )
               }
               </div>
-                  </div>
+            </div>
             </div>
             <div className='flex-center-container'>
               <div className='max-w-600'>
@@ -142,7 +155,7 @@ const LastMatch = () => {
             <p>Pro dané datum nejsou dostupné žádné záznamy.</p>
           ) : (
             matches.map((match) => {
-              return <MatchResult match={match} showData={false} key={match.Id} />
+              return <MatchResult match={match} key={match.Id} />
             })
           )}
         </div>
@@ -151,4 +164,4 @@ const LastMatch = () => {
   );
 };
 
-export default LastMatch;
+export default MatchDayResult;

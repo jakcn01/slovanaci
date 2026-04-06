@@ -32,6 +32,7 @@ export const GetExtendedMatchesData = async () => {
         .from('Matches')
         .select(`
         Id,
+        SmallGame,
         Team1 (
             Id,
             TeamName,

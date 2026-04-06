@@ -1,11 +1,11 @@
-import LastMatch from "./LastMatch";
+import Matches from "./Matches";
 
 const Home = () => {
     
     return (
       <div className='centered-text'>
         <h1>Slovaňáci</h1>
-        <LastMatch />
+        <Matches />
       </div>
     );
   };

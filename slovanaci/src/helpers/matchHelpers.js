@@ -117,7 +117,7 @@ export const getPlayerGoalsString = (tp, matchId, ownGoal = false) => {
   {
     return goalsCount === 0 ? "" :` [vl. ${goalsCount}]`;
   }
-  return goalsCount !== 0 ? ` - ${goalsCount}` : ''
+  return goalsCount !== 0 ? ` ${goalsCount}` : ''
 }
 
 export const getPlayerGoalsFinalString = (tp, matchId) => {
@@ -126,6 +126,16 @@ export const getPlayerGoalsFinalString = (tp, matchId) => {
     return getPlayerGoalsString(tp, matchId) + getPlayerGoalsString(tp, matchId, true)
   }
   return ""
+}
+
+export const getPlayerTotalGoals = (tp) => {
+  const goals = tp.Goals.filter(x => x.OwnGoal === false);
+  const ownGoals = tp.Goals.filter(x => x.OwnGoal === true);
+  
+  const goalsCount = goals.reduce((sum, g) => sum + g.GoalCount, 0);
+  const ownGoalsCount = ownGoals.reduce((sum, g) => sum + g.GoalCount, 0);
+
+  return goalsCount > 0 ? ` ${goalsCount}` : '' + ownGoalsCount > 0 ? ` [vl. ${ownGoalsCount}]` : '';
 }
 
 export const getTeamName = (team) => {

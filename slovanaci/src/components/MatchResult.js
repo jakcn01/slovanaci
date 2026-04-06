@@ -2,7 +2,7 @@ import React from 'react';
 import { formatDate } from '../helpers/dateHelpers';
 import { calculateTeamGoals, getPlayerGoalsFinalString, getTeamName } from '../helpers/matchHelpers';
 
-const MatchResult = ({match, showData = true}) => {
+const MatchResult = ({match}) => {
     const renderTeamPlayer = (tp) => {
         const goalsString = getPlayerGoalsFinalString(tp, match.Id)
         return (
@@ -20,10 +20,9 @@ const MatchResult = ({match, showData = true}) => {
     return (
         <div key={match.Id} className='match'>
         <h2>
-            {getTeamName(match.Team1)} vs {getTeamName(match.Team2)} - {goalsScoredColor1}:{goalsScoredColor2}
+            ({match.MatchOrder}) {getTeamName(match.Team1)} vs {getTeamName(match.Team2)} - {goalsScoredColor1}:{goalsScoredColor2}
         </h2>
-        {showData && <h3>{formatDate(match.MatchDates.MatchDate)} - zápas {match.MatchOrder}</h3>}
-
+        
         <div>
             <div className='team'>
             <ul>
