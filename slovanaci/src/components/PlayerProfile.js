@@ -8,7 +8,7 @@ import { GetPlayerData } from '../api/playersApi.js';
 import { GetMatchesData } from '../api/matchesApi.js';
 import { GetGoalsData } from '../api/goalsApi.js';
 import { GetMatchDatesData } from '../api/matchDatesApi.js';
-import { calculatePlayerGoals, getPlayerStats } from '../helpers/matchHelpers.js';
+import { calculatePlayerGoals, getPlayerStats, getPlayerWinrate } from '../helpers/matchHelpers.js';
 import { GetSeasonsData } from '../api/seasonsApi.js';
 import DropdownFilter from './DropdownFilter.js';
 import "../css/PlayerProfile.css"
@@ -18,6 +18,7 @@ const PlayerProfile = () => {
   const [player, setPlayer] = useState(null);
   const [goalsCount, setGoalsCount] = useState(0); // State to store the goals count
   const [score, setScore] = useState({goalsByTeam: 0, goalsAgainstTeam: 0}); // State to store the goals count
+  const [playerWinrate, setPlayerWinrate] = useState(); 
   const [playerStats, setPlayerStats] = useState(); 
   const [matchDates, setMatchDates] = useState(null);
   const [playerMatches, setPlayerMatches] = useState(null);
@@ -52,6 +53,10 @@ const PlayerProfile = () => {
         const matchDatesData = await GetMatchDatesData(seasonFilter); 
         setMatchDates(matchDatesData)
         const sortedSeasons = await GetSeasonsData();
+        
+
+        const winrate = await getPlayerWinrate(matchDatesData, teamPlayersData);
+        setPlayerWinrate(winrate)
                 
         const seasonFilterOptions = sortedSeasons.map(season => {
             return { value: season.Id.toString(), label: season.Name }
@@ -101,6 +106,7 @@ const PlayerProfile = () => {
                     {player.FavoritePosition !== null ? <p>Preferovaná pozice: {player.FavoritePosition}</p> : null}
                     <p>Vstřelených gólů: {goalsCount}</p>
                     <p>Celkové skóre: {score.goalsByTeam}:{score.goalsAgainstTeam}</p>
+                    <p>Winrate dní: {playerWinrate}%</p>
                     <Attandance matchDates={matchDates} playerMatches={playerMatches} teamPlayerData={playerStats}/>
                 </div>
                 <div className='right-half-column max-w-600'>

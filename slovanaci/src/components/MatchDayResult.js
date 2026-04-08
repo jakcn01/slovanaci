@@ -21,7 +21,6 @@ const MatchDayResult = ({matchDayDateId = null}) => {
       const matchDates = await GetAllMatchDatesData();
 
       if (matchDayDateId === null) {
-        // Calculate the last date
         const sortedMatchDates = matchDates.sort((a, b) => new Date(a.MatchDate) - new Date(b.MatchDate));
         const lastDate = sortedMatchDates[sortedMatchDates.length - 1];
         setDate(lastDate);
@@ -135,7 +134,7 @@ const MatchDayResult = ({matchDayDateId = null}) => {
                   </thead>
                   <tbody>
                     {standings && standings.map(team => (
-                      <tr key={team.teamId}>
+                      <tr key={team.teamColorId}>
                         <td>{team.teamColor}</td>
                         <td className='table-center-column'>{team.wins}</td>
                         <td className='table-center-column'>{team.draws}</td>

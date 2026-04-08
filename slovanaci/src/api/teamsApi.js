@@ -27,6 +27,18 @@ export const AddTeam = async (matchDateId, teamColorId, teamName = "") => {
   return data;
 };
 
+export const UpdateTeam = async (id, winner) => {
+  const { data, error } = await supabase
+    .from('Teams')
+    .update({ Winners: winner })
+    .eq('Id', id)
+    .select()
+    .single();
+ if (error) throw error;
+  return data;
+};
+
+
 export const DeleteTeam = async (teamId) => {
   const { error } = await supabase
     .from("Teams")

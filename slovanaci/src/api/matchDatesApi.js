@@ -4,7 +4,8 @@ export const GetMatchDatesData = async (seasonId) => {
     const { data: matchDatesData, error: matchDatesError } = await supabase
         .from('MatchDates')
         .select('*')
-        .eq('SeasonId', seasonId); // Ensures only correct season matches are included
+        .eq('SeasonId', seasonId) // Ensures only correct season matches are included
+        .order('MatchDate', { ascending: true }); // Order by MatchDate ascending
     if (matchDatesError) throw matchDatesError; // Handle goals error
     return matchDatesData;
 }

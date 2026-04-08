@@ -1,3 +1,6 @@
+import { GetMatchById, GetTeamMatchesCount } from "../api/matchesApi";
+import { calculatePercentage } from "./calculateHelpers";
+
 export const calculateTeamGoals = (players, oponents, match) => {
     const goalsByYourTeam = players
       .reduce((sum, player) => sum + (player.Goals ? player.Goals.reduce((goalSum, g) => g.MatchId === match.Id && g.OwnGoal == false ? goalSum + g.GoalCount : goalSum, 0) : 0), 0);
@@ -17,13 +20,16 @@ export const calculateStandings = (matchesData) => {
       const team1Goals = calculateTeamGoals(match.Team1.Team_Players,match.Team2.Team_Players, match);
       const team2Goals = calculateTeamGoals(match.Team2.Team_Players,match.Team1.Team_Players, match);
 
-      if (!standings[team1Id]) standings[team1Id] = { wins: 0, draws: 0, losses: 0, points: 0, goalsScored: 0, goalsConceded: 0, teamColor: match.Team1.TeamName };
-      if (!standings[team2Id]) standings[team2Id] = { wins: 0, draws: 0, losses: 0, points: 0, goalsScored: 0, goalsConceded: 0, teamColor: match.Team2.TeamName };
+      if (!standings[team1Id]) standings[team1Id] = { wins: 0, draws: 0, losses: 0, points: 0, goalsScored: 0, goalsConceded: 0, teamColor: match.Team1.TeamColor.Color, teamIds: [] };
+      if (!standings[team2Id]) standings[team2Id] = { wins: 0, draws: 0, losses: 0, points: 0, goalsScored: 0, goalsConceded: 0, teamColor: match.Team2.TeamColor.Color, teamIds: [] };
 
       standings[team1Id].goalsScored += team1Goals;
       standings[team1Id].goalsConceded += team2Goals;
       standings[team2Id].goalsScored += team2Goals;
       standings[team2Id].goalsConceded += team1Goals;
+
+      if (standings[team1Id].teamIds.indexOf(match.Team1.Id) === -1) standings[team1Id].teamIds.push(match.Team1.Id);
+      if (standings[team2Id].teamIds.indexOf(match.Team2.Id) === -1) standings[team2Id].teamIds.push(match.Team2.Id);
 
       if (team1Goals > team2Goals) {
           standings[team1Id].points += 3;
@@ -42,16 +48,17 @@ export const calculateStandings = (matchesData) => {
   });
 
   // Convert standings to an array and sort by points, then goal difference
-  return Object.keys(standings).map(teamId => ({
-      teamId,
-      teamColor: standings[teamId].teamColor,
-      points: standings[teamId].points,
-      wins: standings[teamId].wins,
-      draws: standings[teamId].draws,
-      losses: standings[teamId].losses,
-      goalsScored: standings[teamId].goalsScored,
-      goalsConceded: standings[teamId].goalsConceded,
-      goalDifference: standings[teamId].goalsScored - standings[teamId].goalsConceded
+  return Object.keys(standings).map(teamColorId => ({
+      teamColorId,
+      teamIds: standings[teamColorId].teamIds,
+      teamColor: standings[teamColorId].teamColor,
+      points: standings[teamColorId].points,
+      wins: standings[teamColorId].wins,
+      draws: standings[teamColorId].draws,
+      losses: standings[teamColorId].losses,
+      goalsScored: standings[teamColorId].goalsScored,
+      goalsConceded: standings[teamColorId].goalsConceded,
+      goalDifference: standings[teamColorId].goalsScored - standings[teamColorId].goalsConceded
   }))
   .sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference);
 };
@@ -159,3 +166,39 @@ export const getPlayerMatchDates = (matches, playerId) => {
 
   return uniqueDates;
 };
+
+export const getPlayerWinrate = async (matchDatesData, teamPlayerData) => {
+  let wins = 0;
+  let totalMatches = 0;
+  for (const md of matchDatesData) {
+    const thisMatchTeamData = teamPlayerData.filter(tp => tp.TeamId.MatchDateID.MatchDate === md.MatchDate);
+    if (thisMatchTeamData.length === 0) continue; // Skip if no match data for this date
+    const isWinnerResult = await isWinner(thisMatchTeamData);
+    if (isWinnerResult === true) {
+      wins++;
+    }
+    totalMatches++;
+  }
+
+  return calculatePercentage(wins, totalMatches);
+}
+
+export const isWinner = async (matchTeamData) => {
+  if (matchTeamData.length === 0 || matchTeamData.every(tp => tp.TeamId.Winners === null)) return null; // No data to determine winner
+  if (matchTeamData.every(tp => tp.TeamId.Winners === true)) return true;
+  if (matchTeamData.every(tp => tp.TeamId.Winners === false)) return false;
+
+  let loserMatchesCount = 0;
+  let winnerMatchesCount = 0;
+
+  for (const tp of matchTeamData) {
+    const count = await GetTeamMatchesCount(tp.TeamId.Id);
+    if (tp.TeamId.Winners === true) winnerMatchesCount += count;
+    else loserMatchesCount += count;
+  }
+
+  if (winnerMatchesCount > loserMatchesCount) return true;
+  if (loserMatchesCount > winnerMatchesCount) return false;
+
+  return null; // Mixed data, cannot determine winner
+}

@@ -1,0 +1,17 @@
+.attendance-item {
+  width: 40ox;
+  border-radius: 6px;
+  margin-bottom: 0.25rem;
+}
+
+.attendance-item.win {
+  background-color: #d9f7be;
+}
+
+.attendance-item.loss {
+  background-color: #ffccc7;
+}
+
+.attendance-item.draw {
+  background-color: #f2f2f2;;
+}

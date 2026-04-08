@@ -1,5 +1,23 @@
 import { supabase } from './supabase.js'; // Import your Supabase client
 
+export const GetTeamMatchesCount = async (teamId) => {
+  const { data, error } = await supabase
+    .from('Matches')
+    .select(`Id`)
+    .eq('Team1', teamId);
+  if (error) throw error;
+  
+  const { data: data2, error: error2 } = await supabase
+  .from('Matches')
+    .select(`Id`)
+    .eq('Team2', teamId);
+  if (error2) throw error2;
+
+  return (data?.length ?? 0) + (data2?.length ?? 0);
+
+};
+
+
 export const GetMatchesData = async (seasonId) => {
     const { data: matchesData, error: matchesError } = await supabase
         .from('Matches')
@@ -71,7 +89,7 @@ export const GetMatchesForMatchDate = async (matchDateId) => {
         Team1 (
             Id,
             TeamName,
-            TeamColor (Color),
+            TeamColor (Color, Id),
             Team_Players (
             Id,
             Player:PlayerId (Id, Name),
@@ -81,7 +99,7 @@ export const GetMatchesForMatchDate = async (matchDateId) => {
         Team2 (
             Id,
             TeamName,
-            TeamColor (Color),
+            TeamColor (Color, Id),
             Team_Players (
               Id,
               Player:PlayerId (Id, Name),

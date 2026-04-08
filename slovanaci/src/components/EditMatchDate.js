@@ -5,13 +5,14 @@ import { GetPlayersData } from "../api/playersApi";
 import { GetMatchDateById, UpdateMatchDate, LockMatchDate } from "../api/matchDatesApi";
 import { AddTeamPlayer, DeleteTeamPlayer } from "../api/teamPlayerApi";
 import { GetTeamColors } from "../api/teamColorsApi";
+import { UpdateTeam } from "../api/teamsApi";
 import { AddTeam, DeleteTeam, GetTeamsForMatchDate } from "../api/teamsApi";
 import { AddMatch, DeleteMatch, GetMatchesForMatchDate } from "../api/matchesApi";
 import DropdownFilter from "./DropdownFilter";
 import "../css/EditMatchDate.css"; // import CSS
 import { toast } from "react-toastify";
 import Loading from "./Loading";
-import { calculateTeamGoals, getTeamName } from "../helpers/matchHelpers";
+import { calculateTeamGoals, calculateStandings, getTeamName } from "../helpers/matchHelpers";
 
 const EditMatchDate = () => {
   const { id } = useParams(); 
@@ -66,13 +67,25 @@ const EditMatchDate = () => {
 
   const handleLockChange = async (e) => {
     if (e.target.checked) {
-      console.log("Locking match date");
-      // calculate standings and assign winners for this match date
+        const standingsTable = calculateStandings(matches);      
+        if (standingsTable.length > 1) {
+          if (standingsTable[0].points !== standingsTable[1].points 
+            || standingsTable[0].goalDifference !== standingsTable[1].goalDifference
+            || standingsTable[0].goalsScored !== standingsTable[1].goalsScored) 
+          {
+            teams.forEach(async (team) => {
+                const winner = standingsTable[0].teamIds.indexOf(team.Id) !== -1 ? true : false;
+                await UpdateTeam(team.Id, winner);
+              });
+          }
+        }
     }
     else 
     {
-      console.log("Unlocking match date");
-      // Delete all winners for this match date
+      // Delete all results for this match date
+      teams.forEach(async (team) => {
+        await UpdateTeam(team.Id, null);
+      });
     }
     try {
       const updated = await LockMatchDate(id, e.target.checked);
@@ -126,7 +139,7 @@ const EditMatchDate = () => {
             type="text"
             placeholder="Název týmu"
             value={newTeamName}
-            maxlength="30"
+            maxLength="30"
             onChange={(e) => setNewTeamName(e.target.value)}
             className="team-name-input"
           />
@@ -272,7 +285,7 @@ const EditMatchDate = () => {
                 return;
               }
               try {
-                const newMatch = await AddMatch(
+                await AddMatch(
                   id,
                   parseInt(selectedTeam1, 10),
                   parseInt(selectedTeam2, 10),

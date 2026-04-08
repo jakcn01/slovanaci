@@ -3,7 +3,7 @@ import { supabase } from './supabase.js';
 export const GetTeamPlayerDataByPlayer = async (playerId) => {
     const { data: teamPlayersData, error: teamPlayersError } = await supabase
     .from('Team_Players')
-    .select('Id, PlayerId, TeamId (Id, MatchDateID (MatchDate)), Goals (GoalCount, MatchId, OwnGoal)')
+    .select('Id, PlayerId, TeamId (Id, MatchDateID (MatchDate), Winners), Goals (GoalCount, MatchId, OwnGoal)')
     .eq('PlayerId', playerId);
     
     if (teamPlayersError) throw teamPlayersError;
