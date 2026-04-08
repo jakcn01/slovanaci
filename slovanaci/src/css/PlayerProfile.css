@@ -7,3 +7,13 @@
   padding: 20px; 
   display: flex;
 }
+
+.stats-columns {
+  display: flex;
+  gap: 16px;
+  text-align: center;
+}
+
+.stats-columns > div {
+  flex: 1;
+}

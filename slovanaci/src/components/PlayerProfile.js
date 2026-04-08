@@ -19,6 +19,7 @@ const PlayerProfile = () => {
   const [goalsCount, setGoalsCount] = useState(0); // State to store the goals count
   const [score, setScore] = useState({goalsByTeam: 0, goalsAgainstTeam: 0}); // State to store the goals count
   const [playerWinrate, setPlayerWinrate] = useState(); 
+  const [playerGamesWinrate, setPlayerGamesWinrate] = useState(); 
   const [playerStats, setPlayerStats] = useState(); 
   const [matchDates, setMatchDates] = useState(null);
   const [playerMatches, setPlayerMatches] = useState(null);
@@ -104,9 +105,18 @@ const PlayerProfile = () => {
                     <h2>Statistiky</h2>
                     {player.Nickname !== null ? <p>Přezdívka: {player.Nickname}</p> : null}
                     {player.FavoritePosition !== null ? <p>Preferovaná pozice: {player.FavoritePosition}</p> : null}
-                    <p>Vstřelených gólů: {goalsCount}</p>
-                    <p>Celkové skóre: {score.goalsByTeam}:{score.goalsAgainstTeam}</p>
-                    <p>Winrate dní: {playerWinrate}%</p>
+                    <div className="stats-columns">
+                        <div>
+                            <p>Vstřelených gólů: <b>{goalsCount}</b></p>
+                            <p>Celkové skóre: <b>{score.goalsByTeam}:{score.goalsAgainstTeam}</b></p>
+                            <p>Winrate dní: <b>{playerWinrate}%</b></p>
+                        </div>
+                        <div>
+                            <p>Winrate všech zápasů: <b>{score.allWinrate}%</b></p>
+                            <p>Winrate turnájkových zápasů: <b>{score.smallWinrate}%</b></p>
+                            <p>Winrate velkých zápasů: <b>{score.bigWinrate}%</b></p>
+                        </div>
+                    </div>
                     <Attandance matchDates={matchDates} playerMatches={playerMatches} teamPlayerData={playerStats}/>
                 </div>
                 <div className='right-half-column max-w-600'>

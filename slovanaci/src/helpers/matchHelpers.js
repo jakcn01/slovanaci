@@ -72,6 +72,15 @@ export const getPlayerStats = (matches, id) => {
     let goalsByTeam = 0;
     let goalsAgainstTeam = 0;
   
+    let playerAllMatchesCount = 0;
+    let playerAllWinsCount = 0;
+
+    let playerSmallMatchesCount = 0;
+    let playerSmallWinsCount = 0;
+
+    let playerBigMatchesCount = 0;
+    let playerBigWinsCount = 0;
+
     matches.forEach(match => {
       // Check Team1
       const team1Goals = match.Team1.Team_Players.flatMap(p => p.Goals); // All goals by Team1
@@ -80,21 +89,57 @@ export const getPlayerStats = (matches, id) => {
       const isPlayerInTeam1 = match.Team1.Team_Players.some(p => p.PlayerId == id );
       const isPlayerInTeam2 = match.Team2.Team_Players.some(p => p.PlayerId == id );
   
-      if (isPlayerInTeam1) {
-        goalsByTeam += team1Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == false ? sum + goal.GoalCount : sum, 0);
-        goalsAgainstTeam += team1Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == true ? sum + goal.GoalCount : sum, 0);
-        goalsAgainstTeam += team2Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == false ? sum + goal.GoalCount : sum, 0);
-        goalsByTeam += team2Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == true ? sum + goal.GoalCount : sum, 0);
-      }
+      const goalsByTeam1 = team1Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == false ? sum + goal.GoalCount : sum, 0);
+      const goalsByTeam2 = team2Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == false ? sum + goal.GoalCount : sum, 0);
+      const ownGoalsByTeam1 = team1Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == true ? sum + goal.GoalCount : sum, 0);
+      const ownGoalsByTeam2 = team2Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == true ? sum + goal.GoalCount : sum, 0);
 
+      const team1goals = goalsByTeam1 + ownGoalsByTeam2;
+      const team2goals = goalsByTeam2 + ownGoalsByTeam1;
+
+      if (isPlayerInTeam1) {
+        goalsByTeam += team1goals;
+        goalsAgainstTeam += team2goals;
+        if (team1goals > team2goals) {
+          playerAllWinsCount += 1;
+          if (match.SmallGame === true) {
+            playerSmallWinsCount += 1;
+          }
+          else {
+            playerBigWinsCount += 1;
+          }
+        }
+        if (match.SmallGame === true) {
+          playerSmallMatchesCount += 1;
+        } else {
+          playerBigMatchesCount += 1;
+        }
+        playerAllMatchesCount += 1;
+      }
       else if (isPlayerInTeam2) {
-        goalsByTeam += team2Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == false ? sum + goal.GoalCount : sum, 0);
-        goalsAgainstTeam += team2Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == true ? sum + goal.GoalCount : sum, 0);
-        goalsAgainstTeam += team1Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == false ? sum + goal.GoalCount : sum, 0);
-        goalsByTeam += team1Goals.reduce((sum, goal) => goal.MatchId === match.Id && goal.OwnGoal == true ? sum + goal.GoalCount : sum, 0);
+        goalsByTeam += team2goals;
+        goalsAgainstTeam += team1goals;
+        if (team2goals > team1goals) {
+          playerAllWinsCount += 1;
+          if (match.SmallGame === true) {
+            playerSmallWinsCount += 1;
+          }
+          else {
+            playerBigWinsCount += 1;
+          }
+        }
+        if (match.SmallGame === true) {
+          playerSmallMatchesCount += 1;
+        } else {
+          playerBigMatchesCount += 1;
+        }
+        playerAllMatchesCount += 1;
       }
     });
-    return { goalsByTeam, goalsAgainstTeam };
+    const allWinrate = calculatePercentage(playerAllWinsCount, playerAllMatchesCount);
+    const smallWinrate = calculatePercentage(playerSmallWinsCount, playerSmallMatchesCount);
+    const bigWinrate = calculatePercentage(playerBigWinsCount, playerBigMatchesCount);
+    return { goalsByTeam, goalsAgainstTeam, allWinrate, smallWinrate, bigWinrate };
   }
 
 export const createPlusMinus = (matches, id) =>
