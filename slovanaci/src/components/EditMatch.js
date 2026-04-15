@@ -185,8 +185,9 @@ const EditMatch = () => {
         {renderTeamColumn(match.Team1)}
         {renderTeamColumn(match.Team2)}
       </div>
-
-      <Timer />
+      {
+        match.SmallGame === true && <Timer />
+      }
     </div>
   );
 };
