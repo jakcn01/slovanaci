@@ -1,0 +1,73 @@
+.timer-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .timer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    min-width: 220px;
+    background: #f0f0f0;
+    color: #1e1e2e;
+    padding: 10px 16px;
+    z-index: 1000;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    border-radius: 40px;
+  }
+}
+
+.timer-display {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2px;
+  min-width: 70px;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.timer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.08);
+  color: #1e1e2e;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.timer-btn:active {
+  transform: scale(0.92);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.timer-btn:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.timer-btn-play {
+  color: #1e1e2e;
+}
+
+.timer-btn-pause {
+  color: #1e1e2e;
+}
+
+.timer-btn-reset {
+  color: #1e1e2e;
+}

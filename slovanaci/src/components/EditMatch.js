@@ -10,6 +10,7 @@ import Loading from "./Loading";
 import { getTeamName } from "../helpers/matchHelpers";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import Timer from "./Timer";
 
 const EditMatch = () => {
   const { id } = useParams();
@@ -184,6 +185,8 @@ const EditMatch = () => {
         {renderTeamColumn(match.Team1)}
         {renderTeamColumn(match.Team2)}
       </div>
+
+      <Timer />
     </div>
   );
 };
