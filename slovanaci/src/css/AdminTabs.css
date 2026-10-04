@@ -1,0 +1,19 @@
+.admin-tabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid #d8d8d8;
+  margin-bottom: 22px;
+}
+
+.admin-tabs a {
+  color: #555;
+  padding: 10px 2px;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+
+.admin-tabs a.active {
+  color: #167447;
+  border-bottom-color: #167447;
+  font-weight: 600;
+}

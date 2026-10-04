@@ -1,0 +1,96 @@
+.edit-players-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.edit-players-container h1 {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+}
+
+.add-player-form {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.edit-players-container input {
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font: inherit;
+}
+
+.edit-players-container button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid #167447;
+  border-radius: 4px;
+  background: #167447;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+}
+
+.edit-players-container button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.admin-player-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-player-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 54px;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-player-list li > span {
+  overflow-wrap: anywhere;
+}
+
+.admin-player-list li > input {
+  flex: 1;
+}
+
+.admin-player-list li > button,
+.player-admin-actions button {
+  width: 40px;
+  flex: 0 0 40px;
+}
+
+.player-admin-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.player-admin-actions button:last-child {
+  border-color: #666;
+  background: #666;
+}
+
+@media (max-width: 520px) {
+  .add-player-form {
+    grid-template-columns: 1fr auto;
+  }
+
+  .add-player-form label {
+    grid-column: 1 / -1;
+  }
+}

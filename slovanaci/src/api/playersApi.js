@@ -16,6 +16,27 @@ export const GetPlayersData = async () => {
     return playersData;
 }
 
+export const AddPlayer = async (player) => {
+  const { data, error } = await supabase
+    .from('Players')
+    .insert(player)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export const UpdatePlayer = async (id, player) => {
+  const { data, error } = await supabase
+    .from('Players')
+    .update(player)
+    .eq('Id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
 export const GetSimplePlayerData = async () => {
     const { data: playersData, error: playersError } = await supabase.from('Players').select('Id, Name');
     if (playersError) throw playersError;

@@ -15,6 +15,7 @@ import { formatDate } from '../helpers/dateHelpers.js';
 import "../css/EditMatchDates.css"; // add this import at the top
 import { FaPencilAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import AdminTabs from './AdminTabs';
 
 const EditMatchDates = () => {
   const [matchDates, setMatchDates] = useState(null);
@@ -81,6 +82,7 @@ const EditMatchDates = () => {
     
     return (
     <div className="edit-matchdates-container">
+        <AdminTabs />
         <div className="filter-bar">
         <DropdownFilter
             label="Sezóna: "

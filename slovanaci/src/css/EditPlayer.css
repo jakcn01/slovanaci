@@ -1,0 +1,130 @@
+.edit-player-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.edit-player-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.edit-player-heading h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.edit-player-container a {
+  color: #167447;
+}
+
+.edit-player-form {
+  display: grid;
+  grid-template-columns: minmax(150px, 200px) minmax(0, 1fr);
+  align-items: center;
+  gap: 14px 18px;
+}
+
+.edit-player-form > input:not([type="checkbox"]) {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font: inherit;
+}
+
+.player-rating-field {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(150px, 200px) minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+}
+
+.rating-control {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto;
+  align-items: center;
+  gap: 8px 14px;
+}
+
+.rating-control input[type="range"] {
+  width: 100%;
+  accent-color: #167447;
+}
+
+.rating-control output {
+  min-width: 64px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.rating-stars {
+  display: flex;
+  grid-column: 1 / -1;
+  gap: 4px;
+  color: #d28b00;
+  font-size: 1.1rem;
+}
+
+.active-player-toggle {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 10px;
+}
+
+.active-player-toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: #167447;
+}
+
+.edit-player-actions {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.edit-player-actions button {
+  min-height: 40px;
+  padding: 9px 16px;
+  border: 1px solid #167447;
+  border-radius: 4px;
+  background: #167447;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+}
+
+.edit-player-actions button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+@media (max-width: 560px) {
+  .edit-player-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .edit-player-form {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .edit-player-form > input:not([type="checkbox"]) {
+    margin-bottom: 8px;
+  }
+
+  .player-rating-field {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin: 8px 0;
+  }
+}
