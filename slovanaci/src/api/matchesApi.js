@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'; // Import your Supabase client
-
+import { DEFAULT_OUTSIDE_GAME, DEFAULT_SMALL_GAME } from '../const/defaultConstants.js';
 export const GetTeamMatchesCount = async (teamId) => {
   const { data, error } = await supabase
     .from('Matches')
@@ -120,7 +120,7 @@ export const GetMatchesForMatchDate = async (matchDateId) => {
 export const AddMatch = async (matchDateId, team1Id, team2Id, order) => {
   const { data, error } = await supabase
     .from('Matches')
-    .insert([{ MatchDateId: matchDateId, Team1: team1Id, Team2: team2Id, MatchOrder: order, OutsidePitch: true, SmallGame: false }])
+    .insert([{ MatchDateId: matchDateId, Team1: team1Id, Team2: team2Id, MatchOrder: order, OutsidePitch: DEFAULT_OUTSIDE_GAME, SmallGame: DEFAULT_SMALL_GAME }])
     .select('Id, Team1:Team1 (Id, TeamColor:TeamColorId (Id, Color)), Team2:Team2 (Id, TeamColor:TeamColorId (Id, Color)), MatchOrder')
     .single();
 
