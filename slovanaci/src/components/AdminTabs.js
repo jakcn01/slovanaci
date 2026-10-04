@@ -10,6 +10,9 @@ const AdminTabs = () => (
     <NavLink to="/edit-players" className={({ isActive }) => isActive ? 'active' : ''}>
       Hráči
     </NavLink>
+    <NavLink to="/team-generator" className={({ isActive }) => isActive ? 'active' : ''}>
+      Generátor týmů
+    </NavLink>
   </nav>
 );
 

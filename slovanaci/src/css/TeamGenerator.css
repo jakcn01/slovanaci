@@ -1,0 +1,197 @@
+.team-generator-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.team-generator-container h1 {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+}
+
+.generator-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 18px 28px;
+  padding: 0 0 20px;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.generator-controls > label {
+  display: grid;
+  gap: 7px;
+  font-weight: 600;
+}
+
+.team-generator-container select {
+  min-height: 38px;
+  min-width: 120px;
+  padding: 7px 9px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background: white;
+  color: #222;
+  font: inherit;
+}
+
+.game-type-control {
+  display: flex;
+  gap: 14px;
+  margin: 0;
+  padding: 8px 12px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.game-type-control legend {
+  padding: 0 5px;
+}
+
+.game-type-control label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.generator-player-selection {
+  margin-top: 22px;
+}
+
+.generator-section-heading,
+.generated-team-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.generator-section-heading h2,
+.generated-teams > h2 {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+}
+
+.generator-section-heading span {
+  color: #555;
+}
+
+.generator-player-selection ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.generator-player-selection li {
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.generator-player-selection li label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.generator-player-selection li span {
+  flex: 1;
+}
+
+.generator-player-selection li small {
+  color: #555;
+  white-space: nowrap;
+}
+
+.generator-primary-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.team-generator-container button {
+  min-height: 40px;
+  padding: 9px 15px;
+  border: 1px solid #167447;
+  border-radius: 4px;
+  background: #167447;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.team-generator-container button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.generated-teams {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #d8d8d8;
+}
+
+.generated-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.generated-team {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+}
+
+.generated-team-heading {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.generated-team-heading h3 {
+  margin: 8px 0;
+  font-size: 1.05rem;
+}
+
+.generated-team-rating {
+  margin: 8px 0 14px;
+  color: #167447;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.generated-team h4 {
+  margin: 14px 0 5px;
+  font-size: 0.9rem;
+}
+
+.generated-team ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.generated-team li {
+  padding: 3px 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .generator-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-type-control {
+    grid-column: 1 / -1;
+    justify-content: space-around;
+  }
+
+  .generator-primary-action button {
+    width: 100%;
+  }
+}

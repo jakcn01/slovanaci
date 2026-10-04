@@ -117,10 +117,10 @@ export const GetMatchesForMatchDate = async (matchDateId) => {
   return data;
 };
 
-export const AddMatch = async (matchDateId, team1Id, team2Id, order) => {
+export const AddMatch = async (matchDateId, team1Id, team2Id, order, smallGame = DEFAULT_SMALL_GAME) => {
   const { data, error } = await supabase
     .from('Matches')
-    .insert([{ MatchDateId: matchDateId, Team1: team1Id, Team2: team2Id, MatchOrder: order, OutsidePitch: DEFAULT_OUTSIDE_GAME, SmallGame: DEFAULT_SMALL_GAME }])
+    .insert([{ MatchDateId: matchDateId, Team1: team1Id, Team2: team2Id, MatchOrder: order, OutsidePitch: DEFAULT_OUTSIDE_GAME, SmallGame: smallGame }])
     .select('Id, Team1:Team1 (Id, TeamColor:TeamColorId (Id, Color)), Team2:Team2 (Id, TeamColor:TeamColorId (Id, Color)), MatchOrder')
     .single();
 
