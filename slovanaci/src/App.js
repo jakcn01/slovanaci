@@ -12,6 +12,7 @@ import EditMatchDates from './components/EditMatchDates';
 import EditPlayers from './components/EditPlayers';
 import EditPlayer from './components/EditPlayer';
 import TeamGenerator from './components/TeamGenerator';
+import EditSeasons from './components/EditSeasons';
 import PrivateRoute from './components/PrivateRoute';
 import EditMatchDate from './components/EditMatchDate';
 import EditMatch from './components/EditMatch';
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/edit-players" element={<PrivateRoute><EditPlayers /></PrivateRoute>} />
           <Route path="/edit-player/:id" element={<PrivateRoute><EditPlayer /></PrivateRoute>} />
           <Route path="/team-generator" element={<PrivateRoute><TeamGenerator /></PrivateRoute>} />
+          <Route path="/edit-seasons" element={<PrivateRoute><EditSeasons /></PrivateRoute>} />
           <Route path="/edit-match-date/:id" element={<PrivateRoute><EditMatchDate /></PrivateRoute>} />
           <Route path="/edit-match/:id" element={<PrivateRoute><EditMatch /></PrivateRoute>} />
         </Routes>

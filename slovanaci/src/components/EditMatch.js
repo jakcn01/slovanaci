@@ -185,6 +185,18 @@ const EditMatch = () => {
         {renderTeamColumn(match.Team1)}
         {renderTeamColumn(match.Team2)}
       </div>
+    
+      <div className="button-row">
+        <button className="btn btn-grey" onClick={() => navigate(-1)}>
+          <FaArrowLeft /> 
+          Zpět
+        </button>
+
+        <button className="btn btn-green" onClick={handleSave}>
+          Uložit
+        </button>
+      </div>
+
       {
         match.SmallGame === true && <Timer />
       }

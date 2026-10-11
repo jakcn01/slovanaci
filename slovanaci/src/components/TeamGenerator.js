@@ -186,13 +186,35 @@ const TeamGenerator = () => {
     <main className="team-generator-container">
       <AdminTabs />
       <h1>Generátor týmů</h1>
+      <section className="generator-player-selection" aria-label="Výběr hráčů">
+        <div className="generator-section-heading">
+          <h2>Hráči</h2>
+          <span>{selectedPlayers.length} vybráno</span>
+        </div>
+        <ul>
+          {players.map((player) => (
+            <li key={player.Id}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selectedPlayerIds.includes(player.Id)}
+                  onChange={(event) => updatePlayerSelection(player.Id, event.target.checked)}
+                />
+                <span>{player.Name}</span>
+                <small>{((Number(player[ratingField]) || 0) / 2).toFixed(1)} / 10</small>
+              </label>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section className="generator-controls" aria-label="Nastavení generátoru">
         <label>
           Počet týmů
           <select value={teamCount} onChange={(event) => {
             const count = Number(event.target.value);
             setTeamCount(count);
-            setPlayersPerTeam((current) => Math.min(current, Math.max(1, Math.floor(selectedPlayers.length / count))));
+            setPlayersPerTeam(Math.max(1, Math.floor(selectedPlayers.length / count)));
             setGeneratedTeams(null);
           }}>
             <option value="2">2</option>
@@ -218,28 +240,6 @@ const TeamGenerator = () => {
           <label><input type="radio" name="game-type" checked={gameType === 'inside'} onChange={() => { setGameType('inside'); setGeneratedTeams(null); }} /> V hale</label>
           <label><input type="radio" name="game-type" checked={gameType === 'outside'} onChange={() => { setGameType('outside'); setGeneratedTeams(null); }} /> Venku</label>
         </fieldset>
-      </section>
-
-      <section className="generator-player-selection" aria-label="Výběr hráčů">
-        <div className="generator-section-heading">
-          <h2>Hráči</h2>
-          <span>{selectedPlayers.length} vybráno</span>
-        </div>
-        <ul>
-          {players.map((player) => (
-            <li key={player.Id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={selectedPlayerIds.includes(player.Id)}
-                  onChange={(event) => updatePlayerSelection(player.Id, event.target.checked)}
-                />
-                <span>{player.Name}</span>
-                <small>{((Number(player[ratingField]) || 0) / 2).toFixed(1)} / 10</small>
-              </label>
-            </li>
-          ))}
-        </ul>
       </section>
 
       <div className="generator-primary-action">

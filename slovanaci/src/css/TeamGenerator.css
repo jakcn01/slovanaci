@@ -22,6 +22,7 @@
   display: grid;
   gap: 7px;
   font-weight: 600;
+  margin-top: 22px;
 }
 
 .team-generator-container select {

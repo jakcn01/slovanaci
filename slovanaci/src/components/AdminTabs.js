@@ -13,6 +13,9 @@ const AdminTabs = () => (
     <NavLink to="/team-generator" className={({ isActive }) => isActive ? 'active' : ''}>
       Generátor týmů
     </NavLink>
+    <NavLink to="/edit-seasons" className={({ isActive }) => isActive ? 'active' : ''}>
+      Sezóny
+    </NavLink>
   </nav>
 );
 
