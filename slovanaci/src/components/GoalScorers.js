@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { GetAllTeamPlayerData } from '../api/teamPlayerApi.js';
 import { GetMatchesData } from '../api/matchesApi.js';
 import DropdownFilter from './DropdownFilter.js';
+import { GetSettingsData } from '../api/settingsApi';
+import { gameTypeOptions, getDefaultGameType } from '../const/settings';
 import "../css/GoalScorers.css";
 
 const GoalScorers = () => {
@@ -18,17 +20,45 @@ const GoalScorers = () => {
     const [playerGoals, setPlayerGoals] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [filter, setFilter] = useState('big'); // Filter state for match type
+    const [filter, setFilter] = useState(null);
     const [sortConfig, setSortConfig] = useState({ key: 'Goals', direction: 'desc' }); // Default sort
     const navigate = useNavigate();
 
-    const filterOptions = [
-        { value: 'all', label: 'Vše' },
-        { value: 'small', label: 'Turnájky' },
-        { value: 'big', label: 'Zápasy' },
-    ];
+    useEffect(() => {
+        let cancelled = false;
+        const initializeFilters = async () => {
+            try {
+                const [seasonData, settings] = await Promise.all([
+                    GetSeasonsData(),
+                    GetSettingsData().catch(err => {
+                        console.error(err);
+                        return [];
+                    }),
+                ]);
+                if (cancelled) return;
+                setSeasons(seasonData.map(season => ({ value: String(season.Id), label: season.Name })));
+                const activeSeason = seasonData.find(season => season.IsCurrent) ?? seasonData[0];
+                setSeasonFilter(activeSeason ? String(activeSeason.Id) : '0');
+                setFilter(getDefaultGameType(settings));
+                if (!activeSeason) {
+                    setPlayers([]);
+                    setPlayerGoals([]);
+                    setLoading(false);
+                }
+            } catch (err) {
+                if (!cancelled) {
+                    setError(err);
+                    setLoading(false);
+                }
+            }
+        };
+        initializeFilters();
+        return () => { cancelled = true; };
+    }, []);
 
     useEffect(() => {
+        if (filter === null || seasonFilter === '0') return;
+        let cancelled = false;
         const fetchPlayers = async () => {
             try {
                 setLoading(true);
@@ -36,6 +66,7 @@ const GoalScorers = () => {
                 const goalsData = await GetGoalsData(seasonFilter);
                 const teamPlayersData = await GetAllTeamPlayerData();
                 const matchesData = await GetMatchesData(seasonFilter);
+                if (cancelled) return;
 
                 setPlayers(playersData);
 
@@ -59,30 +90,16 @@ const GoalScorers = () => {
                 const rankedPlayerGoals = rankPlayersByGoals(playerGoals);
                 const sortedPlayerGoals = sortPlayers(rankedPlayerGoals, sortConfig.key, sortConfig.direction);
                 setPlayerGoals(sortedPlayerGoals);
-
-                const sortedSeasons = await GetSeasonsData();
-        
-                const seasonFilterOptions = sortedSeasons.map(season => {
-                    return { value: season.Id.toString(), label: season.Name }
-                })
-        
-                const seasonDefaultOption = sortedSeasons.find(s => s.IsCurrent);
-
-                if (seasonFilter === '0' && seasonFilterOptions.length !== 0)
-                {
-                    setSeasonFilter(seasonDefaultOption.Id.toString())
-                }
-                
-                setSeasons(seasonFilterOptions)
             } catch (err) {
                 console.error(err);
-                setError(err);
+                if (!cancelled) setError(err);
             } finally {
-                setLoading(false);
+                if (!cancelled) setLoading(false);
             }
         };
 
         fetchPlayers();
+        return () => { cancelled = true; };
     }, [filter, seasonFilter]); // Rerun when the filter changes
 
     const filterMatches = (matches, filter) => {
@@ -149,7 +166,7 @@ const GoalScorers = () => {
             <h1>Střelci</h1>
             <DropdownFilter
                 label="Druh zápasu: "
-                options={filterOptions}
+                options={gameTypeOptions}
                 selectedValue={filter}
                 onChange={setFilter}
             />

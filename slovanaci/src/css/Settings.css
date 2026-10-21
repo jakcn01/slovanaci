@@ -9,69 +9,49 @@
   font-size: 1.5rem;
 }
 
-.admin-season-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.add-season-form {
+.setting-row {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 40px;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #ddd;
 }
 
-.add-season-form input {
+.setting-row input:not([type='checkbox']),
+.setting-row select {
+  box-sizing: border-box;
+  width: 100%;
   min-width: 0;
-  padding: 9px 10px;
+  min-height: 40px;
+  padding: 8px;
   border: 1px solid #bbb;
   border-radius: 4px;
+  background: white;
+  color: inherit;
   font: inherit;
 }
 
-.add-season-form button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
+.setting-row input[type='checkbox'] {
+  justify-self: start;
+  width: 20px;
+  height: 20px;
+  accent-color: #167447;
 }
 
 @media (max-width: 520px) {
-  .add-season-form {
+  .setting-row {
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .add-season-form label {
+  .setting-row label {
     grid-column: 1 / -1;
   }
 }
 
-.admin-season-list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 60px;
-  box-sizing: border-box;
-  padding: 8px 12px;
-  border-bottom: 1px solid #ddd;
-}
-
-.admin-season-list .current-season {
-  background: #edf7f0;
-}
-
-.season-name {
+.setting-row label {
   min-width: 0;
   overflow-wrap: anywhere;
-}
-
-.current-season-label {
-  color: #167447;
-  font-size: 0.9rem;
-  font-weight: 600;
 }
 
 .edit-seasons-container button {
@@ -85,12 +65,12 @@
   font: inherit;
 }
 
-.admin-season-list button {
+.setting-row button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 40px;
-  flex: 0 0 40px;
+  height: 40px;
 }
 
 .edit-seasons-container button:hover:not(:disabled) {
