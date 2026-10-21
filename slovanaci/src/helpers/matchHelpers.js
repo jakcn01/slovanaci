@@ -187,7 +187,7 @@ export const getPlayerTotalGoals = (tp) => {
   const goalsCount = goals.reduce((sum, g) => sum + g.GoalCount, 0);
   const ownGoalsCount = ownGoals.reduce((sum, g) => sum + g.GoalCount, 0);
 
-  return goalsCount > 0 ? ` ${goalsCount}` : '' + ownGoalsCount > 0 ? ` [vl. ${ownGoalsCount}]` : '';
+  return (goalsCount > 0 ? ` ${goalsCount}` : '') + (ownGoalsCount > 0 ? ` [vl. ${ownGoalsCount}]` : '');
 }
 
 export const getTeamName = (team) => {
